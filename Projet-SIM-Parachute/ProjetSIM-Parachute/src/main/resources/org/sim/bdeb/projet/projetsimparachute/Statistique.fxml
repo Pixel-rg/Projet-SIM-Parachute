@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<VBox alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="490.0" prefWidth="200.0" spacing="30.0" style="-fx-background-color: #1a252f; -fx-border-color: #34495e; -fx-border-width: 0 2 0 0;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Statistique">
+         <font>
+            <Font name="SansSerif Bold" size="24.0" />
+         </font>
+      </Text>
+      <Text fill="#bdc3c7" strokeType="OUTSIDE" strokeWidth="0.0" text="Vélocité(m/s)">
+         <VBox.margin>
+            <Insets />
+         </VBox.margin>
+         <font>
+            <Font name="SansSerif Regular" size="14.0" />
+         </font>
+      </Text>
+      <Label prefWidth="100.0" style="-fx-text-fill: #3A86FF; -fx-background-color: linear-gradient(to bottom, #0B132B, #1C2541, #1C2541);;" text="0">
+         <font>
+            <Font size="24.0" />
+         </font>
+         <VBox.margin>
+            <Insets top="-10.0" />
+         </VBox.margin>
+      </Label>
+      <Text fill="#bdc3c7" strokeType="OUTSIDE" strokeWidth="0.0" text="Force(N)">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Text>
+      <Label prefWidth="100.0" style="-fx-text-fill: #3A86FF; -fx-background-color: linear-gradient(to bottom, #013220, #025930, #047A44);;" text="0">
+         <font>
+            <Font size="24.0" />
+         </font>
+         <VBox.margin>
+            <Insets top="-10.0" />
+         </VBox.margin>
+      </Label>
+      <Text fill="#bdc3c7" strokeType="OUTSIDE" strokeWidth="0.0" text="Temps">
+         <font>
+            <Font name="SansSerif Regular" size="14.0" />
+         </font>
+      </Text>
+      <Label prefWidth="100.0" style="-fx-text-fill: #3A86FF; -fx-background-color: linear-gradient(to bottom, #4B1F00, #7A3600, #A64D00);;" text="0">
+         <font>
+            <Font size="24.0" />
+         </font>
+         <VBox.margin>
+            <Insets top="-10.0" />
+         </VBox.margin>
+      </Label>
+      <Text fill="#bdc3c7" strokeType="OUTSIDE" strokeWidth="0.0" text="Altitude(m)">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Text>
+      <Label prefWidth="100.0" style="-fx-text-fill: #3A86FF; -fx-background-color: linear-gradient(to bottom, #2C003E, #4B0070, #6A0099);;" text="0">
+         <font>
+            <Font size="24.0" />
+         </font>
+         <VBox.margin>
+            <Insets top="-10.0" />
+         </VBox.margin>
+      </Label>
+   </children>
+   <padding>
+      <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+   </padding>
+   <opaqueInsets>
+      <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+   </opaqueInsets>
+</VBox>

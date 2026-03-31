@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.paint.RadialGradient?>
+<?import javafx.scene.paint.Stop?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<StackPane id=" #3A86FF" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="65.0" style="-fx-background-color: linear-gradient(to bottom, #0B132B, #1C2541);;" styleClass="#1C2541" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1">
+   <padding>
+      <Insets bottom="20.0" top="20.0" />
+   </padding>
+   <children>
+      <Text fx:id="txtTitre" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Simulation et optimisation de descente en parachute" textAlignment="CENTER">
+         <font>
+            <Font size="23.0" />
+         </font>
+      </Text>
+      <Line endX="900.0" endY="-2.071063995361328" startX="-100.0" startY="-2.0710678100585938" stroke="#9fb3c8" strokeWidth="5.0" StackPane.alignment="TOP_CENTER">
+         <fill>
+            <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
+               <stops>
+                  <Stop>
+                     <color>
+                        <Color red="0.30263158679008484" green="0.10227826237678528" blue="0.10227826237678528" />
+                     </color>
+                  </Stop>
+                  <Stop offset="1.0">
+                     <color>
+                        <Color red="1.0" green="1.0" blue="1.0" />
+                     </color>
+                  </Stop>
+               </stops>
+            </RadialGradient>
+         </fill>
+         <StackPane.margin>
+            <Insets top="40.0" />
+         </StackPane.margin>
+      </Line>
+   </children>
+   <effect>
+      <DropShadow>
+         <color>
+            <Color opacity="0.5" />
+         </color>
+      </DropShadow>
+   </effect>
+</StackPane>

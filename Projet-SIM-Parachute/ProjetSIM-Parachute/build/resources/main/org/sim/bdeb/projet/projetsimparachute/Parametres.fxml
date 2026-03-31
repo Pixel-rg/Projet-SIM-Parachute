@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" spacing="30.0" style="-fx-border-color: #34495e; -fx-background-color: #1a252f; -fx-border-width: 0 2 0 0;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Paramètres">
+         <font>
+            <Font name="System Bold" size="24.0" />
+         </font>
+      </Text>
+      <Text fill="#bdc3c7" strokeType="OUTSIDE" strokeWidth="0.0" text="Masse du parachutiste (kg)">
+         <font>
+            <Font name="SansSerif Regular" size="14.0" />
+         </font>
+      </Text>
+      <TextField id="textMasse" fx:id="textMasse" style="-fx-text-fill: #ffffff; -fx-control-inner-background: #2c3e50; -fx-border-color: #3498db; -fx-border-radius: 4; -fx-background-radius: 4;">
+         <VBox.margin>
+            <Insets right="10.0" top="-10.0" />
+         </VBox.margin>
+      </TextField>
+      <Text fill="#bdc3c7" strokeType="OUTSIDE" strokeWidth="0.0" text="Altitude initiale (m)">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Text>
+      <TextField id="textAltitudeInitiale" fx:id="textAltitudeInitiale" style="-fx-control-inner-background: #2c3e50; -fx-text-fill: #ffffff; -fx-border-color: #3498db; -fx-border-radius: 4; -fx-background-radius: 4;">
+         <VBox.margin>
+            <Insets right="10.0" top="-10.0" />
+         </VBox.margin>
+      </TextField>
+      <Text fill="#bdc3c7" strokeType="OUTSIDE" strokeWidth="0.0" text="Surface du parachute(m²)">
+         <font>
+            <Font name="SansSerif Regular" size="14.0" />
+         </font>
+      </Text>
+      <TextField id="textCoefficient" fx:id="textSurface" style="-fx-text-fill: #ffffff; -fx-control-inner-background: #2c3e50; -fx-border-color: #3498db; -fx-border-radius: 4; -fx-background-radius: 4;">
+         <VBox.margin>
+            <Insets right="10.0" top="-10.0" />
+         </VBox.margin>
+      </TextField>
+      <Text fill="#95a5a6" strokeType="OUTSIDE" strokeWidth="0.0" text="Temps optimal">
+         <VBox.margin>
+            <Insets left="27.0" top="20.0" />
+         </VBox.margin>
+         <font>
+            <Font name="Segoe UI Semibold" size="18.0" />
+         </font>
+      </Text>
+      <Label id="labelTempsOptimal" fx:id="labelTempsOptimal" alignment="CENTER" maxWidth="1000.0" style="-fx-text-fill: #3A86FF; -fx-border-color: #1C3284; -fx-border-radius: 8; -fx-background-radius: 8;" text="---">
+         <font>
+            <Font name="System Bold" size="20.0" />
+         </font>
+         <VBox.margin>
+            <Insets left="-10.0" />
+         </VBox.margin>
+      </Label>
+   </children>
+   <opaqueInsets>
+      <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+   </opaqueInsets>
+   <padding>
+      <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+   </padding>
+</VBox>
