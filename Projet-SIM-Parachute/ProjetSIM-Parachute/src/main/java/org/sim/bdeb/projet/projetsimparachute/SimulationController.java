@@ -49,9 +49,8 @@ public class SimulationController {
     public void lancerSimulation() {
         //créer un simulateur avec les paramètres de l'utilisateur
 
-        // Abishanth: uhhh on cree des simulateur à chaque instant? Il faut juste un seul.
+        this.simulationEnCours = true;
         simulateur = new Simulateur(masseUtilisateur,surfaceUtilisateur,hauteurInitialeUtilisateur);
-        // correction: simulationEnCours = true;
         timer.start();
     }
 

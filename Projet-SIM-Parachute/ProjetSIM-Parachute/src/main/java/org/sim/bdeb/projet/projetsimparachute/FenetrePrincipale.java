@@ -17,13 +17,14 @@ public class FenetrePrincipale extends BorderPane {
     private InterfaceParametres parametres;
     private VueAnimation animation;
     private VueStatistique stat;
-    // et quand on reclique dessus, setBoutonPressed(false);
 
     private SimulationController simulationController;
     private Stage stage;
 
-    @FXML private Button demarrer; //Quand appuyé dessus, on fait simulationController.boutonDebuterAnimation(true);
+    @FXML
+    private Button demarrer;
 
+    private String styleOriginalVert; // Variable pour stocker ton design SceneBuilder
 
 
     @FXML
@@ -47,10 +48,9 @@ public class FenetrePrincipale extends BorderPane {
         this.stage.setScene(scene);
     }
 
-    public void update(){
+    public void update() {
         animation.update();
         stat.update();
-        verifierBoutonDemarrer();
 
     }
 
@@ -81,22 +81,29 @@ public class FenetrePrincipale extends BorderPane {
         }
     }
 
-
     private void configurerDemarrer() {
         try {
+            // 1. Charger le fichier FXML
             FXMLLoader loader = new FXMLLoader(getClass().getResource("Demarrer.fxml"));
-            // On définit cette classe comme le contrôleur si ce n'est pas fait dans le FXML
             loader.setController(this);
-            Parent structureBouton = loader.load();
 
-            // Une fois chargé, le champ @FXML demarrer est maintenant lié !
-            this.setBottom(structureBouton);
 
-            // CONFIGURER L'ACTION ICI (UNE SEULE FOIS)
+            // 2. Transformer le FXML en un objet Java (structureTitre devient un StackPane)
+            Parent structureTitre = loader.load();
+
+            // 3. Appliquer les réglages de positionnement du BorderPane
+            setAlignment(structureTitre, Pos.CENTER);
+
+            styleOriginalVert = demarrer.getStyle();
             verifierBoutonDemarrer();
+            // 4. Placer le titre en haut de la fenêtre
+            this.setBottom(structureTitre);
+
 
         } catch (IOException e) {
-            System.out.println("Erreur chargement : " + e.getMessage());
+            // En cas d'erreur (fichier mal nommé ou mal placé)
+            System.out.println("Impossible de charger le fichier FXML du tableau de bord : " + e.getMessage());
+
         }
     }
 
@@ -109,10 +116,11 @@ public class FenetrePrincipale extends BorderPane {
 
             if (simulationController.isSimulationEnCours()) {
                 simulationController.setSimulationEnCours(false);
-                demarrer.setStyle("");
+                demarrer.setStyle(styleOriginalVert);
+                demarrer.setText("Démarrer");
 
-            }
-            else{
+
+            } else {
                 simulationController.setSimulationEnCours(true);
                 simulationController.lancerSimulation();
                 boutonDemarrerEnRouge();
@@ -122,15 +130,15 @@ public class FenetrePrincipale extends BorderPane {
 
     }
 
-    private void boutonDemarrerEnRouge(){
+    private void boutonDemarrerEnRouge() {
 
         //Fond en dégradé léger rouge vif → button arreter
         demarrer.setStyle(
                 "-fx-background-color: linear-gradient(to bottom, #FF3B30, #FF6B6B);" +
-                        "-fx-text-fill: #FFFFFF;" +
-                        "-fx-background-radius: 8;" +
-                        "-fx-font-weight: bold;"
+                        "-fx-background-radius: 20;"
+
         );
+        demarrer.setText("Arrêter");
 
     }
 
@@ -169,11 +177,11 @@ public class FenetrePrincipale extends BorderPane {
     }
 
     private void transfererValeurSurface() {
-        transfererValeur(parametres.getTextSurface(),valeur -> simulationController.setSurfaceUtilisateur(valeur));
+        transfererValeur(parametres.getTextSurface(), valeur -> simulationController.setSurfaceUtilisateur(valeur));
     }
 
     private void transfererValeurAltitude() {
-        transfererValeur(parametres.getTextAltitudeInitiale(),valeur -> simulationController.setSurfaceUtilisateur(valeur));
+        transfererValeur(parametres.getTextAltitudeInitiale(), valeur -> simulationController.setSurfaceUtilisateur(valeur));
 
     }
 
@@ -200,6 +208,7 @@ public class FenetrePrincipale extends BorderPane {
             }
         });
     }
+
     public VueAnimation getVueAnimation() {
         return animation;
     }
