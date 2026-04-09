@@ -1,13 +1,22 @@
 package org.sim.bdeb.projet.projetsimparachute;
 
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
+import javafx.scene.Parent;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 
 import java.io.IOException;
 
 public class VueStatistique extends VBox {
+
+    @FXML private Label temps;
+    @FXML private Label velocite;
+    @FXML private Label altitude;
+    @FXML private Label force;
 
 
     public VueStatistique(){

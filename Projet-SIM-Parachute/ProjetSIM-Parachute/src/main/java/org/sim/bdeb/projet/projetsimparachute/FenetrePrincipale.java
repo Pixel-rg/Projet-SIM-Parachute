@@ -208,6 +208,11 @@ public class FenetrePrincipale extends BorderPane {
             }
         });
     }
+    private void recupererValeur(String getValeur, java.util.function.DoubleConsumer methodeDuController) { //fonction entrée en paramètre
+
+       //on a transféré des valeurs vers moteurPhysique
+        //On veut mtn récuperer des valeurs pour les afficher dans stat
+    }
 
     public VueAnimation getVueAnimation() {
         return animation;
