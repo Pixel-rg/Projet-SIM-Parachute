@@ -17,20 +17,14 @@ public class FenetrePrincipale extends BorderPane {
     private InterfaceParametres parametres;
     private VueAnimation animation;
     private VueStatistique stat;
-    private Button lancer; //Quand appuyé dessus, on fait simulationController.boutonDebuterAnimation(true);
     // et quand on reclique dessus, setBoutonPressed(false);
 
     private SimulationController simulationController;
     private Stage stage;
 
-    @FXML
-    private Button demarrer;
-    /* Fond en dégradé léger rouge vif → button arreter
-    -fx-background-color: linear-gradient(to bottom, #FF3B30, #FF6B6B);
-    -fx-text-fill: #FFFFFF;
-    -fx-background-radius: 8;
-    -fx-font-weight: bold;
-    */
+    @FXML private Button demarrer; //Quand appuyé dessus, on fait simulationController.boutonDebuterAnimation(true);
+
+
 
     @FXML
     private Button reintialiser;
@@ -53,7 +47,17 @@ public class FenetrePrincipale extends BorderPane {
         this.stage.setScene(scene);
     }
 
+    public void update(){
+        animation.update();
+        stat.update();
+        verifierBoutonDemarrer();
+
+    }
+
     //--------------- INTERFACE GÉNÉRALE ------------------
+
+
+    //------------BOUTON DÉMARRER-----------------------
 
     private void configurerTitre() {
 
@@ -77,43 +81,58 @@ public class FenetrePrincipale extends BorderPane {
         }
     }
 
+
     private void configurerDemarrer() {
         try {
-            // 1. Charger le fichier FXML
             FXMLLoader loader = new FXMLLoader(getClass().getResource("Demarrer.fxml"));
+            // On définit cette classe comme le contrôleur si ce n'est pas fait dans le FXML
+            loader.setController(this);
+            Parent structureBouton = loader.load();
 
-            // 2. Transformer le FXML en un objet Java (structureTitre devient un StackPane)
-            Parent structureTitre = loader.load();
+            // Une fois chargé, le champ @FXML demarrer est maintenant lié !
+            this.setBottom(structureBouton);
 
-            // 3. Appliquer les réglages de positionnement du BorderPane
-            setAlignment(structureTitre, Pos.CENTER);
-
-            // 4. Placer le titre en haut de la fenêtre
-            this.setBottom(structureTitre);
+            // CONFIGURER L'ACTION ICI (UNE SEULE FOIS)
+            verifierBoutonDemarrer();
 
         } catch (IOException e) {
-            // En cas d'erreur (fichier mal nommé ou mal placé)
-            System.out.println("Impossible de charger le fichier FXML du tableau de bord : " + e.getMessage());
-
+            System.out.println("Erreur chargement : " + e.getMessage());
         }
     }
 
 
-//    private void configurerBoutonLancer() {
-//        //Initialisation du bouton avec un texte
-//        lancer = new Button("Démarrer la Simulation");
-//        //Configuration de la touche
-//        lancer.setOnAction(event -> {
-//            if (simulationController != null) {
-//                simulationController.setSimulationEnCours(true);
-//                //lancer.setDisable(true); // On désactive le bouton pendant la chute
-//                //Mikail: Il vaut mieux le laisser recommencer la simulation quand il veut à la place d'attendre
-//            }
-//        });
-//
-//        //On l'ajoute a l'interface (par exemple en haut, ou dans InterfaceParametres)
-//        this.setBottom(lancer);
-//    }
+    private void verifierBoutonDemarrer() {
+
+        //Configuration de la touche démarrer
+        demarrer.setOnAction(event -> {
+            if (simulationController == null) return;
+
+            if (simulationController.isSimulationEnCours()) {
+                simulationController.setSimulationEnCours(false);
+                demarrer.setStyle("");
+
+            }
+            else{
+                simulationController.setSimulationEnCours(true);
+                simulationController.lancerSimulation();
+                boutonDemarrerEnRouge();
+
+            }
+        });
+
+    }
+
+    private void boutonDemarrerEnRouge(){
+
+        //Fond en dégradé léger rouge vif → button arreter
+        demarrer.setStyle(
+                "-fx-background-color: linear-gradient(to bottom, #FF3B30, #FF6B6B);" +
+                        "-fx-text-fill: #FFFFFF;" +
+                        "-fx-background-radius: 8;" +
+                        "-fx-font-weight: bold;"
+        );
+
+    }
 
     private void creerFenetre() {
 //        configurerBoutonLancer();

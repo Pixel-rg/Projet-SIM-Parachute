@@ -17,8 +17,6 @@ public class SimulationController {
 
     //Boutons début et fin de la simulation
     private boolean simulationEnCours;
-    private boolean boutonDebuterSimulation = false;
-    private boolean boutonPressed = false;
 
     public SimulationController(FenetrePrincipale fenetre) {
 
@@ -33,39 +31,19 @@ public class SimulationController {
 
                 double deltaTemps = (temps - dernierTemps) * 1e-9;
 
-                //Solution temporaire: Mikail
-                if(boutonDebuterSimulation) {
-                    lancerSimulation();
-                    boutonDebuterSimulation = false;
-                    simulationEnCours = true;
-                    boutonPressed = true;
 
-                    if (!boutonPressed) {
-                        simulationEnCours = false;
-                    }
-                }
-                fenetre.getVueAnimation().update();
-                if(simulationEnCours){
+                if (simulationEnCours) {
+                    // On met à jour la physique/logique
                     simulateur.update(deltaTemps);
+                    // On met à jour le dessin
+                    fenetre.update();
                 }
-
-
-                if(simulationEnCours){
-                    //Abishanth:  Mauvais place?Cette methode est lie plus avec le button LANCER
-                    lancerSimulation();
-                }
-                else {
-                    arreterSimulation();
-                }
-
-                // Abishanth:J'assume simlateur.update c'est lorsque simulation est en cours? Donc, faudra le mettre dans le cas if
-
-                //simlateur.update(deltaTemps);
 
                 dernierTemps = temps;
             }
         };
     }
+
 
     //Appeler quand on clique sur un bouton lancer
     public void lancerSimulation() {
@@ -98,5 +76,9 @@ public class SimulationController {
     //Quand le bouton "lancer" est appuyé, on met SimulationEnCours à true depuis la fenetrePrincipale
     public void setSimulationEnCours(boolean simulationEnCours) {
         this.simulationEnCours = simulationEnCours;
+    }
+
+    public boolean isSimulationEnCours() {
+        return simulationEnCours;
     }
 }

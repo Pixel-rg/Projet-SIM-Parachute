@@ -28,6 +28,7 @@ public class InterfaceParametres extends VBox {
 
 
 
+
     private void configurerInterface() {
         try {
             // Charger le fichier normalement

@@ -15,6 +15,11 @@ public class VueStatistique extends VBox {
         configurerInterface();
     }
 
+
+    public void update(){
+
+    }
+
     //Trouver une facon déviter le copier coller avec cette méthode et configurerParametres
     private void configurerInterface() {
         try {
