@@ -11,7 +11,7 @@ public class MoteurPhysique {
     private static final double VITESSESECURITAIRE = 56;
     private double tempsOptimal;
     private double tempsTotal = 0;
-    private double surface = 0;
+    private double surface = 0.6;
 
     public MoteurPhysique() {
         //Abishanth, Jalal et Zakarya
@@ -36,6 +36,9 @@ public class MoteurPhysique {
         // Saisir le temps optimal d'ouvrir la parachute
         // Abishanth: J' ai aussi penser à tester à chaque instant pour trouver le temps optimal mais je ne suis pas sur
         if (!parachutiste.estOuvert() && parachutiste.vitesse.getY() >= VITESSESECURITAIRE) {
+            parachutiste.ouvrirParachute();
+            tempsOptimal = tempsTotal;
+        } else if (!parachutiste.estOuvert() && parachutiste.vitesse.getY() >= calculerVitesseTerminale(parachutiste)){
             parachutiste.ouvrirParachute();
             tempsOptimal = tempsTotal;
         }
