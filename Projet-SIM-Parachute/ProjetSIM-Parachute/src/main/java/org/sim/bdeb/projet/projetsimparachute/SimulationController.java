@@ -86,5 +86,11 @@ public class SimulationController {
         return simulationEnCours;
     }
 
+    //Abishanth: J ai ajouter ces getters
+
+    public double getVitesseParachutiste() {return simulateur.getParachutiste().getVitesse().getY();}
+
+    public boolean getParachuteOuvert() {return simulateur.getParachutiste().estOuvert();}
+
 
 }
