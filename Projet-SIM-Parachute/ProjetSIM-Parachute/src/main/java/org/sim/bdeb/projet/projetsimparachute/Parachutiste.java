@@ -15,7 +15,7 @@ public class Parachutiste extends ObjetPhysique{
         super(position,vitesse);
         this.surface = surface;
         this.coefficientTrainee = 1;
-        this.masseTotale = masseTotale;
+        this.masseTotale = masse;
     }
 
     public double getSurface() {

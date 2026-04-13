@@ -11,20 +11,24 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class VueAnimation extends Pane {
 
-    private Image[] parachutiste;
-    private ImageView[]parachutisteView;
-
-
     private Image nuageImage;
     private ImageView nuage;
     private ArrayList<Nuage> nuages = new ArrayList<>();
     private Image background = new Image("Ciel.png");
     private ImageView CielVue = new ImageView(background);
+
+    private Image parachuteFerme = new Image("ParachuteFerme.png");
+    private Image parachuteOuvert = new Image("ParachuteOuvert.png");
+
+    private ImageView parachutisteVue = new ImageView(parachuteFerme);
+
     public static final double  POSITIONX_PARAMETRE = 211;
     public static final double POSITIONX_STAT = 808;
 
     public static final double POSITIONY_TITRE = 65;
     public static final double POSITIONY_DEMARRER = 535;
+
+    //BUG: Abishanth: je vois que les nuages vont devant le parachutiste au lieu de derniere
 
 
 
@@ -32,8 +36,15 @@ public class VueAnimation extends Pane {
         CielVue.setFitWidth(1080);
         CielVue.setFitHeight(720);
         this.getChildren().add(CielVue);
+
         spawnerNuages();
+
+        parachutisteVue.setFitWidth(225);
+        parachutisteVue.setFitHeight(225);
+        this.getChildren().add(parachutisteVue);
     }
+
+    //Pas changer vitesse a celle oppose a parachutiste
 
     private void spawnerNuages() {
         // code pour nuages
@@ -46,7 +57,7 @@ public class VueAnimation extends Pane {
         }
     }
 
-    public void update() {
+    public void update(double vitesseParachutiste) {
         //Gerer hors-ecran nuages
         List<Nuage> horsEcran = new ArrayList<>();
 
@@ -76,7 +87,17 @@ public class VueAnimation extends Pane {
         //this.getChildren().add(corpsParachutiste);
 
 
-    public void dessinerParachutiste(double x, double y) {
+    public void dessinerParachutiste(boolean paraOuvert) {
+
+        parachutisteVue.setX(185);
+        parachutisteVue.setY(150);
+
+        if (paraOuvert) {
+            parachutisteVue.setImage(parachuteOuvert);
+        } else {
+            parachutisteVue.setImage(parachuteFerme);
+        }
+
 
     }
 }

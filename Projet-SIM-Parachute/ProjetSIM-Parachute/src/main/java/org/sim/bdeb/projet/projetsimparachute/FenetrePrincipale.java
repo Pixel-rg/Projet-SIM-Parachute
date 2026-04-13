@@ -49,8 +49,15 @@ public class FenetrePrincipale extends BorderPane {
     }
 
     public void update() {
-        animation.update();
         stat.update();
+        if (simulationController != null) {
+            double vitesseY = simulationController.getVitesseParachutiste();
+            boolean paraOuvert = simulationController.getParachuteOuvert();
+
+            animation.update(vitesseY);
+            animation.dessinerParachutiste(paraOuvert);
+
+        }
 
     }
 
@@ -160,9 +167,11 @@ public class FenetrePrincipale extends BorderPane {
 
 
     // ----------------ANIMATION------------------------
+    //Abishanth: JE NE SAIS PAS SI IL FAUT LE METTRE TRUE OU FALSE JE METS CA POUR L INSTANT
 
     public void mettreAJourPosition(double x, double y) {
-        animation.dessinerParachutiste(x, y);
+        animation.dessinerParachutiste(false);
+        // avant il y a avait x et y dans para - Abishanth
     }
 
 
@@ -207,6 +216,11 @@ public class FenetrePrincipale extends BorderPane {
                 }
             }
         });
+    }
+    private void recupererValeur(String getValeur, java.util.function.DoubleConsumer methodeDuController) { //fonction entrée en paramètre
+
+       //on a transféré des valeurs vers moteurPhysique
+        //On veut mtn récuperer des valeurs pour les afficher dans stat
     }
 
     public VueAnimation getVueAnimation() {

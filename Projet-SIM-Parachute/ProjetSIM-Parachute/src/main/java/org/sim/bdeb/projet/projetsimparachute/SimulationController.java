@@ -15,6 +15,11 @@ public class SimulationController {
     private double surfaceUtilisateur;
     private double hauteurInitialeUtilisateur;
 
+    //Paramètres qu'on doit communiquer du moteurPhysique au tableau des stats
+    private double velocite;
+    private double force;
+    private double temps;
+
     //Boutons début et fin de la simulation
     private boolean simulationEnCours;
 
@@ -80,4 +85,12 @@ public class SimulationController {
     public boolean isSimulationEnCours() {
         return simulationEnCours;
     }
+
+    //Abishanth: J ai ajouter ces getters
+
+    public double getVitesseParachutiste() {return simulateur.getParachutiste().getVitesse().getY();}
+
+    public boolean getParachuteOuvert() {return simulateur.getParachutiste().estOuvert();}
+
+
 }
