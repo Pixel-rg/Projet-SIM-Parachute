@@ -7,6 +7,8 @@ import static org.sim.bdeb.projet.projetsimparachute.Gravite.GRAVITE;
 public class MoteurPhysique {
     private Gravite gravite;
     private ResistanceAir resistanceAir;
+    //Source de la vitesse sécuritaire (m/s):
+    //https://parachutevoltige.com/fr/blogue/faits-divers/les-5-mythes-les-plus-repandus-dans-le-monde-du-parachutisme/#:~:text=La%20vitesse%20terminale%20de%20chute,ou%20de%201000%20pieds%2Fminute.
     private static final double VITESSESECURITAIRE = 56;
     private double tempsOptimal;
     private double tempsTotal = 0;
@@ -47,7 +49,7 @@ public class MoteurPhysique {
         if (!parachutiste.estOuvert()) {
             surface = resistanceAir.getSurface();
         }
-
+        // Source: https://tpeps7.wordpress.com/2015/01/12/la-resistance-de-lair/
         return Math.sqrt((2 * masse * GRAVITE) / (rho * surface * cd));
     }
 
