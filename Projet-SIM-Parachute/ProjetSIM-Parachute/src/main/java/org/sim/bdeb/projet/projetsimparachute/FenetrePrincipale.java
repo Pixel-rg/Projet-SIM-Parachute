@@ -27,7 +27,7 @@ public class FenetrePrincipale extends BorderPane {
     @FXML
     private Button reintialiser;
 
-    private String styleOriginalVert;
+    private String styleOriginalVert; // Variable pour stocker ton design SceneBuilder
 
     public FenetrePrincipale(Stage stage, SimulationController simulation) {
         this.parametres = new InterfaceParametres();
@@ -38,6 +38,7 @@ public class FenetrePrincipale extends BorderPane {
 
         creerFenetre();
 
+        //Créer la scène à chaque fois que la fenetre est instancié, donc chaque fois quon démarre le appController
         Scene scene = new Scene(this, 1000, 700);
         this.stage.setTitle("Simulateur de Parachute");
         this.stage.setScene(scene);
@@ -70,34 +71,55 @@ public class FenetrePrincipale extends BorderPane {
     }
 
     private void configurerTitre() {
+
         try {
+            // 1. Charger le fichier FXML
             FXMLLoader loader = new FXMLLoader(getClass().getResource("Titre.fxml"));
+
+            // 2. Transformer le FXML en un objet Java (structureTitre devient un StackPane)
             Parent structureTitre = loader.load();
+
+            // 3. Appliquer les réglages de positionnement du BorderPane
             setAlignment(structureTitre, Pos.CENTER);
+
+            // 4. Placer le titre en haut de la fenêtre
             this.setTop(structureTitre);
+
         } catch (IOException e) {
+            // En cas d'erreur (fichier mal nommé ou mal placé)
             System.out.println("Impossible de charger le fichier FXML du titre : " + e.getMessage());
+
         }
     }
-
     private void configurerDemarrer() {
         try {
+            // 1. Charger le fichier FXML
             FXMLLoader loader = new FXMLLoader(getClass().getResource("Demarrer.fxml"));
             loader.setController(this);
-            Parent structureDemarrer = loader.load();
-            setAlignment(structureDemarrer, Pos.CENTER);
+
+
+            // 2. Transformer le FXML en un objet Java (structureTitre devient un StackPane)
+            Parent structureTitre = loader.load();
+
+            // 3. Appliquer les réglages de positionnement du BorderPane
+            setAlignment(structureTitre, Pos.CENTER);
 
             styleOriginalVert = demarrer.getStyle();
             verifierBoutonDemarrer();
-            configurerBoutonReinitialiser();
+            // 4. Placer le titre en haut de la fenêtre
+            this.setBottom(structureTitre);
 
-            this.setBottom(structureDemarrer);
+
         } catch (IOException e) {
+            // En cas d'erreur (fichier mal nommé ou mal placé)
             System.out.println("Impossible de charger le fichier FXML du tableau de bord : " + e.getMessage());
+
         }
     }
 
     private void verifierBoutonDemarrer() {
+
+        //Configuration de la touche démarrer
         demarrer.setOnAction(event -> {
             if (simulationController == null) return;
 
@@ -126,6 +148,7 @@ public class FenetrePrincipale extends BorderPane {
     }
 
     private void boutonDemarrerEnRouge() {
+        //Fond en dégradé léger rouge vif → button arreter
         demarrer.setStyle(
                 "-fx-background-color: linear-gradient(to bottom, #FF3B30, #FF6B6B);" +
                         "-fx-background-radius: 20;"
@@ -134,6 +157,9 @@ public class FenetrePrincipale extends BorderPane {
     }
 
     private void creerFenetre() {
+        //        configurerBoutonLancer();
+
+        //EVENTS pour donner les paramètres au Controller
         transfererValeurMasse();
         transfererValeurSurface();
         transfererValeurAltitude();
@@ -146,7 +172,13 @@ public class FenetrePrincipale extends BorderPane {
         configurerDemarrer();
     }
 
+    // ------------------INTERFACE PARAMETRES-----------------------
+
+    //    Savoir quand les valeurs des parametres sont modifiées et prévenir SimulationController de modifier la physique
+
     private void transfererValeurMasse() {
+        //Interface fonctionnelle
+        //champ de texte à surveiller (getTextMasse) --> prendre valeur --> donne-le à la méthode setMasseUtilisateur de mon contrôleur.
         transfererValeur(parametres.getTextMasse(), valeur -> {
             if (simulationController != null) simulationController.setMasseUtilisateur(valeur);
         });
@@ -171,13 +203,21 @@ public class FenetrePrincipale extends BorderPane {
             if (!texte.isEmpty()) {
                 try {
                     double valeur = Double.parseDouble(texte);
+                    //mettre la masse en double
+                    //Abishanth:  il arrive quoi si simulation controller est null? on va crash je crois?
+                    // correction pour debogage:
+                    // if (simulationController != null) { }
                     methode.accept(valeur);
                 } catch (NumberFormatException ex) {
-                    // Valeur invalide, on ignore
+                    // Gestion d'erreur si ce n'est pas un chiffre
+
+                    // Abishanth: faudra mettre du code, comme une sorte de message?
+                    // System.out.println("Masse invalide : " + texteEntre);                }
                 }
             }
         });
     }
+
 
     public VueAnimation getVueAnimation() {
         return animation;
