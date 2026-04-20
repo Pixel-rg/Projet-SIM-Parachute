@@ -20,7 +20,7 @@ public class ResistanceAir {
             surface = calculSurfaceParaOuvert(parachutiste);
             coefficientTrainee = 1.75;
         }
-
+        //Source: https://engineerexcel.com/air-resistance-calculator/
         // La force gravitionnelle est appliqué vers le bas et de sens opposé à la force verticale.
         // Le signe négatif permet de trouver la force totale qui permet de calculer l'accéleration
         double forceVertical = -0.5*densiteAir*coefficientTrainee*surface*Math.abs(Math.pow(vitesseVertical,2));
