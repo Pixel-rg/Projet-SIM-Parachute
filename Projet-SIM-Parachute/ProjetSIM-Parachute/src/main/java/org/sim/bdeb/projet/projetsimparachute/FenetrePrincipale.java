@@ -186,4 +186,8 @@ public class FenetrePrincipale extends BorderPane {
     public void setSimulationController(SimulationController simulationController) {
         this.simulationController = simulationController;
     }
+
+    public InterfaceParametres getParametres() {
+        return parametres;
+    }
 }

@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextFormatter;
 import javafx.scene.layout.VBox;
 import java.io.IOException;
 
@@ -19,6 +20,7 @@ public class InterfaceParametres extends VBox {
     - masse parachutiste  - surface(air)  - Hauteur initial
      */
 
+    private boolean peutEcrire = true;
 
     public InterfaceParametres() {
 
@@ -46,8 +48,26 @@ public class InterfaceParametres extends VBox {
             seulementChiffres(textAltitudeInitiale);
             seulementChiffres(textSurface);
 
+            seulementIntervallePermis(textMasse,40,100);
+            seulementIntervallePermis(textAltitudeInitiale,3000,6000);
+            seulementIntervallePermis(textSurface,5,40);
+
         } catch (IOException e) {
             System.err.println("Erreur de chargement des paramètres : " + e.getMessage());
+        }
+    }
+
+    public void empecherEcrire(){
+
+        if(!peutEcrire){    //peutEcrire est false si bouton démarrer a été cliqué. Cliquez sur réintialiser pour remettre true
+            textMasse.setDisable(true);
+            textAltitudeInitiale.setDisable(true);
+            textSurface.setDisable(true);
+        }
+        else{
+            textMasse.setDisable(false);
+            textAltitudeInitiale.setDisable(false);
+            textSurface.setDisable(false);
         }
     }
 
@@ -63,6 +83,47 @@ public class InterfaceParametres extends VBox {
                 // forcer le champ à revenir à l'ancienne version
                 champ.setText(ancienTexte);
 
+            }
+        });
+    }
+
+    private void seulementIntervallePermis(TextField champ, int min, int max) {
+
+        //TextFormatter: intercepte chaque touche pressée avant qu'elle ne soit affichée.
+        //Source:
+        champ.setTextFormatter(new TextFormatter<>(change -> {
+            // On récupère ce que serait le texte final si on acceptait le changement
+            String nouveauTexte = change.getControlNewText();
+
+            // autoriser le champ vide pour que l'utilisateur puisse effacer son texte
+            if (nouveauTexte.isEmpty()) {
+                return change;
+            }
+
+            // Mettre String en int
+            int valeur = Integer.parseInt(nouveauTexte);
+
+            // 3. valeur doit être plus petit que le max
+            if (valeur <= max) {
+                return change;
+            }
+
+            return null; //Si retourne change, l'action de l'utilisateur est accepté , null = c'est refusé
+        }));
+
+        // quand l'utilisateur finit d'interagir avec le champ.
+        champ.focusedProperty().addListener((observation, etaitFocus, estFocus) -> {
+            // Si estFocus est faux, cela veut dire que l'utilisateur a cliqué ailleurs, donc il faut verifier champ
+            if (!estFocus) {
+                String texte = champ.getText();
+
+                int valeur = Integer.parseInt(texte);
+
+                if (texte.isEmpty()||valeur <min) {
+                    // Si le champ est vide à la sortie, on force la valeur minimale ou si la valeur finale est inférieure au minimum autorisé
+                    champ.setText(String.valueOf(min));
+
+                }
             }
         });
     }
@@ -85,5 +146,13 @@ public class InterfaceParametres extends VBox {
 
     public void setLabelTempsOptimal(Label labelTempsOptimal) {
         this.labelTempsOptimal = labelTempsOptimal;
+    }
+
+    public void setPeutEcrire(boolean peutEcrire) {
+        this.peutEcrire = peutEcrire;
+    }
+
+    public boolean isPeutEcrire() {
+        return peutEcrire;
     }
 }

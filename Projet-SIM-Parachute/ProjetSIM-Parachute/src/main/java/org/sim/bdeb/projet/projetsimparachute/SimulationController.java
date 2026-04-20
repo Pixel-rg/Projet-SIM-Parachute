@@ -2,16 +2,20 @@ package org.sim.bdeb.projet.projetsimparachute;
 
 import javafx.animation.AnimationTimer;
 
+//Classe passerelle entre la vue(FenetrePrincipale) et la logique(Simulateur)
+//Fourni les informations de la fenetrePrincipale jusqu'à la simulation
 public class SimulationController {
 
     private AnimationTimer timer;
     private Simulateur simulateur;
     private FenetrePrincipale fenetre;
 
+    //Paramètres modifiés par l'utilisateur qu'on doit communiquer à la simulation
     private double masseUtilisateur;
     private double surfaceUtilisateur;
     private double hauteurInitialeUtilisateur;
 
+    //Boutons début et fin de la simulation
     private boolean simulationEnCours;
 
     public SimulationController(FenetrePrincipale fenetre) {
@@ -39,8 +43,13 @@ public class SimulationController {
         };
     }
 
+    //Appeler quand on clique sur un bouton démarrer
     public void lancerSimulation() {
+        //créer un simulateur avec les paramètres de l'utilisateur
+
         this.simulationEnCours = true;
+        fenetre.getParametres().setPeutEcrire(false);
+        fenetre.getParametres().empecherEcrire();
         simulateur = new Simulateur(masseUtilisateur, hauteurInitialeUtilisateur, surfaceUtilisateur);
         timer.start();
     }
