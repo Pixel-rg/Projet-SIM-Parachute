@@ -45,7 +45,9 @@ public class MoteurPhysique {
         double rho = 1.225;
         double masse = parachutiste.getMasse();
         double cd = parachutiste.getCoefficientTrainee();
-
+        // Dès que la vitesse du parachutiste atteint la vitesse sécuritaire ou celle de la
+        // vitesse terminale du parachutiste, on applique
+        // à cet instant précis la variable du temps optimal.
         if (!parachutiste.estOuvert()) {
             surface = (resistanceAir.getSurface() == 0) ? 0.6 : resistanceAir.getSurface(); // ← seul changement
         }
@@ -56,6 +58,8 @@ public class MoteurPhysique {
         return tempsTotal;
     }
 
+    //La méthode suivante permet de retourner la valeur du temps optimal
+    //calculé précedemment.
     public double getTempsOptimal() {
         return tempsOptimal;
     }

@@ -53,10 +53,12 @@ public class FenetrePrincipale extends BorderPane {
         double force = simulationController.getForce();
         boolean paraOuvert = simulationController.getParachuteOuvert();
         double hauteurInitiale = simulationController.getHauteurInitiale();
+        double tempsOpt = simulationController.getTempsOptimal();
 
         // Mettre à jour les stats
         stat.update(vitesse, altitude, temps, force);
 
+        parametres.updateTempsOptimal(tempsOpt);
         // Mettre à jour l'animation
         animation.update(vitesse, altitude, hauteurInitiale);
         animation.dessinerParachutiste(paraOuvert);
