@@ -13,7 +13,9 @@ public class VueAnimation extends Pane {
 
     private ArrayList<Nuage> nuages = new ArrayList<>();
     private Image background = new Image("Ciel.png");
+    private Image solAtterissage = new Image("Sol.png");
     private ImageView cielVue = new ImageView(background);
+    private ImageView solVue = new ImageView(solAtterissage);
 
     private Image parachuteFerme = new Image("ParachuteFerme.png");
     private Image parachuteOuvert = new Image("ParachuteOuvert.png");
@@ -36,6 +38,9 @@ public class VueAnimation extends Pane {
         cielVue.setFitWidth(1080);
         cielVue.setFitHeight(720);
         this.getChildren().add(cielVue);
+        solVue.setFitWidth(1080);
+        solVue.setFitHeight(720);
+        this.getChildren().add(solVue);
 
         spawnerNuages();
 
