@@ -28,6 +28,12 @@ public class InterfaceParametres extends VBox {
 
     }
 
+    public void updateTempsOptimal(double tempsOpt) {
+        if (labelTempsOptimal != null) {
+            labelTempsOptimal.setText(String.format("%.1f s", tempsOpt));
+        }
+    }
+
 
 
 

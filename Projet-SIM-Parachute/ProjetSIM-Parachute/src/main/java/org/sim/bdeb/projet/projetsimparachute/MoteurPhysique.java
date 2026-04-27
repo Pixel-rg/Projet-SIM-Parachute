@@ -32,6 +32,9 @@ public class MoteurPhysique {
         parachutiste.setPosition(parachutiste.position.add(parachutiste.vitesse.multiply(temps)));
 
         // Ouvrir le parachute automatiquement si vitesse dépasse seuil sécuritaire
+        // Dès que la vitesse du parachutiste atteint la vitesse sécuritaire ou celle de la
+        // vitesse terminale du parachutiste, on applique
+        // à cet instant précis la variable du temps optimal.
         if (!parachutiste.estOuvert() && parachutiste.vitesse.getY() >= VITESSESECURITAIRE) {
             parachutiste.ouvrirParachute();
             tempsOptimal = tempsTotal;
@@ -57,6 +60,8 @@ public class MoteurPhysique {
         return tempsTotal;
     }
 
+    //La méthode suivante permet de retourner la valeur du temps optimal
+    //calculé précedemment.
     public double getTempsOptimal() {
         return tempsOptimal;
     }

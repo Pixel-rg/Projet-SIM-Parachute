@@ -110,4 +110,12 @@ public class SimulationController {
     public double getHauteurInitiale() {
         return hauteurInitialeUtilisateur;
     }
+
+    //La méthode suivante permet à la classe FenetrePrincipale d'accéder au temps optimal.
+    //Si le simulateur n'est pas encore créé (avant de mettre Démarrer), elle retourne 0.
+    public double getTempsOptimal(){
+        if (simulateur == null) return 0;
+        return simulateur.getTempsOptimal();
+    }
+
 }
