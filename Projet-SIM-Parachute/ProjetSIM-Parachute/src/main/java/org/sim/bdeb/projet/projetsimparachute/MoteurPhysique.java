@@ -32,9 +32,6 @@ public class MoteurPhysique {
         parachutiste.setPosition(parachutiste.position.add(parachutiste.vitesse.multiply(temps)));
 
         // Ouvrir le parachute automatiquement si vitesse dépasse seuil sécuritaire
-        // Dès que la vitesse du parachutiste atteint la vitesse sécuritaire ou celle de la
-        // vitesse terminale du parachutiste, on applique
-        // à cet instant précis la variable du temps optimal.
         if (!parachutiste.estOuvert() && parachutiste.vitesse.getY() >= VITESSESECURITAIRE) {
             parachutiste.ouvrirParachute();
             tempsOptimal = tempsTotal;
@@ -50,18 +47,15 @@ public class MoteurPhysique {
         double cd = parachutiste.getCoefficientTrainee();
 
         if (!parachutiste.estOuvert()) {
-            surface = resistanceAir.getSurface();
+            surface = (resistanceAir.getSurface() == 0) ? 0.6 : resistanceAir.getSurface(); // ← seul changement
         }
         // Source: https://tpeps7.wordpress.com/2015/01/12/la-resistance-de-lair/
         return Math.sqrt((2 * masse * GRAVITE) / (rho * surface * cd));
     }
-
     public double getTempsTotal() {
         return tempsTotal;
     }
 
-    //La méthode suivante permet de retourner la valeur du temps optimal
-    //calculé précedemment.
     public double getTempsOptimal() {
         return tempsOptimal;
     }

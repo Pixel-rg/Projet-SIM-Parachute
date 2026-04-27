@@ -17,15 +17,16 @@ public class SimulationController {
 
     //Boutons début et fin de la simulation
     private boolean simulationEnCours;
-
+    long dernierTemps = System.nanoTime();
     public SimulationController(FenetrePrincipale fenetre) {
         this.fenetre = fenetre;
 
         timer = new AnimationTimer() {
-            long dernierTemps = System.nanoTime();
+
 
             @Override
-            public void handle(long temps) {
+            public void handle(long
+                                       temps) {
                 double deltaTemps = (temps - dernierTemps) * 1e-9;
                 dernierTemps = temps;
 
@@ -45,12 +46,14 @@ public class SimulationController {
 
     //Appeler quand on clique sur un bouton démarrer
     public void lancerSimulation() {
+        System.out.println("masse: " + masseUtilisateur + " surface: " + surfaceUtilisateur + " hauteur: " + hauteurInitialeUtilisateur);
         //créer un simulateur avec les paramètres de l'utilisateur
 
         this.simulationEnCours = true;
         fenetre.getParametres().setPeutEcrire(false);
         fenetre.getParametres().empecherEcrire();
         simulateur = new Simulateur(masseUtilisateur, hauteurInitialeUtilisateur, surfaceUtilisateur);
+        dernierTemps = System.nanoTime(); // ← ajoute cette ligne
         timer.start();
     }
 
@@ -110,12 +113,4 @@ public class SimulationController {
     public double getHauteurInitiale() {
         return hauteurInitialeUtilisateur;
     }
-
-    //La méthode suivante permet à la classe FenetrePrincipale d'accéder au temps optimal.
-    //Si le simulateur n'est pas encore créé (avant de mettre Démarrer), elle retourne 0.
-    public double getTempsOptimal(){
-        if (simulateur == null) return 0;
-        return simulateur.getTempsOptimal();
-    }
-
 }
