@@ -40,7 +40,7 @@ public class MoteurPhysique {
         if (!parachutiste.estOuvert() && parachutiste.vitesse.getY() >= VITESSESECURITAIRE) {
             parachutiste.ouvrirParachute();
             tempsOptimal = tempsTotal;
-        } else if (!parachutiste.estOuvert() && parachutiste.vitesse.getY() >= calculerVitesseTerminale(parachutiste)) {
+        } else if (!parachutiste.estOuvert() && parachutiste.vitesse.getY() >= calculerVitesseTerminale(parachutiste)*0.98) {
             parachutiste.ouvrirParachute();
             tempsOptimal = tempsTotal;
         }

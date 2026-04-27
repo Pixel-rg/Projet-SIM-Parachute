@@ -24,7 +24,7 @@ public class VueStatistique extends VBox {
         altitude.setText(String.format("%.0f", altitudeVal));
         temps.setText(String.format("%.1f s", tempsVal));
         force.setText(String.format("%.1f", forceVal));
-        System.out.println(tempsVal);
+
     }
 
     private void configurerInterface() {

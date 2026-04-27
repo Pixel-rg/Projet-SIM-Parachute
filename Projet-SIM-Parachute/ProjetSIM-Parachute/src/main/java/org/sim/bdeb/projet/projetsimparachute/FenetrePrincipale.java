@@ -95,6 +95,7 @@ public class FenetrePrincipale extends BorderPane {
 
         }
     }
+
     private void configurerDemarrer() {
         try {
             // 1. Charger le fichier FXML
@@ -133,9 +134,14 @@ public class FenetrePrincipale extends BorderPane {
                 demarrer.setStyle(styleOriginalVert);
                 demarrer.setText("Démarrer");
             } else {
-                simulationController.setSimulationEnCours(true);
-                simulationController.lancerSimulation();
-                boutonDemarrerEnRouge();
+
+                if (!parametres.getTextMasse().getText().isEmpty() && !parametres.getTextSurface().getText().isEmpty()
+                        && !parametres.getTextAltitudeInitiale().getText().isEmpty()) {
+                    simulationController.setSimulationEnCours(true);
+                    simulationController.lancerSimulation();
+                    boutonDemarrerEnRouge();
+                }
+
             }
         });
     }
@@ -160,6 +166,7 @@ public class FenetrePrincipale extends BorderPane {
         demarrer.setText("Arrêter");
     }
 
+
     private void creerFenetre() {
         //        configurerBoutonLancer();
 
@@ -180,7 +187,7 @@ public class FenetrePrincipale extends BorderPane {
 
     //    Savoir quand les valeurs des parametres sont modifiées et prévenir SimulationController de modifier la physique
 
-    private void transfererValeurMasse() {
+    public void transfererValeurMasse() {
         //Interface fonctionnelle
         //champ de texte à surveiller (getTextMasse) --> prendre valeur --> donne-le à la méthode setMasseUtilisateur de mon contrôleur.
         transfererValeur(parametres.getTextMasse(), valeur -> {
@@ -188,13 +195,13 @@ public class FenetrePrincipale extends BorderPane {
         });
     }
 
-    private void transfererValeurSurface() {
+    public void transfererValeurSurface() {
         transfererValeur(parametres.getTextSurface(), valeur -> {
             if (simulationController != null) simulationController.setSurfaceUtilisateur(valeur);
         });
     }
 
-    private void transfererValeurAltitude() {
+    public void transfererValeurAltitude() {
         // BUG FIXÉ: était setSurfaceUtilisateur, doit être setHauteurInitialeUtilisateur
         transfererValeur(parametres.getTextAltitudeInitiale(), valeur -> {
             if (simulationController != null) simulationController.setHauteurInitialeUtilisateur(valeur);

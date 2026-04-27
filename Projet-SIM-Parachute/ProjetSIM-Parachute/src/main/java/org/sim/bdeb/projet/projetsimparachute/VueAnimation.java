@@ -75,7 +75,7 @@ public class VueAnimation extends Pane {
         parachutisteVue.setY(yEcran);
 
         // Nuages montent à une vitesse proportionnelle à la vitesse du parachutiste
-        double vitesseNuages = Math.max(0.5, vitesseParachutiste * 0.02);
+        double vitesseNuages = Math.max(0.5, vitesseParachutiste * 0.4); //Boost artificiel de la vitesse (*0.5)
 
         List<Nuage> horsEcran = new ArrayList<>();
 

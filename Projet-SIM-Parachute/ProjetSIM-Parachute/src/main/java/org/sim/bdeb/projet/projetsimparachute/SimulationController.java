@@ -1,6 +1,7 @@
 package org.sim.bdeb.projet.projetsimparachute;
 
 import javafx.animation.AnimationTimer;
+import javafx.scene.layout.VBox;
 
 //Classe passerelle entre la vue(FenetrePrincipale) et la logique(Simulateur)
 //Fourni les informations de la fenetrePrincipale jusqu'à la simulation
@@ -20,6 +21,7 @@ public class SimulationController {
     private boolean simulationEnCours;
     private boolean aReintialise = true;
     private boolean resetChrono;
+    private int nbCliquerDemarrer;
 
     public SimulationController(FenetrePrincipale fenetre) {
         this.fenetre = fenetre;
@@ -58,6 +60,13 @@ public class SimulationController {
 
     //Appeler quand on clique sur un bouton démarrer
     public void lancerSimulation() {
+        nbCliquerDemarrer++;
+        //        if(nbCliquerDemarrer == 1){
+//            fenetre.transfererValeurMasse();
+//            fenetre.transfererValeurSurface();
+//            fenetre.transfererValeurAltitude();
+//        }
+//
         this.simulationEnCours = true;
 
         // FORCE la réinitialisation du chrono pour la prochaine frame du timer
@@ -69,6 +78,8 @@ public class SimulationController {
         if (aReintialise) {
             simulateur = new Simulateur(masseUtilisateur, hauteurInitialeUtilisateur, surfaceUtilisateur);
         }
+
+
         aReintialise = false;
 
         timer.start();
@@ -78,6 +89,7 @@ public class SimulationController {
         timer.stop();
         simulationEnCours = false;
     }
+
 
     public void setMasseUtilisateur(double masseUtilisateur) {
         this.masseUtilisateur = masseUtilisateur;
