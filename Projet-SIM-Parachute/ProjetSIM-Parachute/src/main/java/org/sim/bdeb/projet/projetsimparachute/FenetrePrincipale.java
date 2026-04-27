@@ -55,10 +55,12 @@ public class FenetrePrincipale extends BorderPane {
         double hauteurInitiale = simulationController.getHauteurInitiale();
         double tempsOpt = simulationController.getTempsOptimal();
 
+
         // Mettre à jour les stats
         stat.update(vitesse, altitude, temps, force);
 
         parametres.updateTempsOptimal(tempsOpt);
+
         // Mettre à jour l'animation
         animation.update(vitesse, altitude, hauteurInitiale);
         animation.dessinerParachutiste(paraOuvert);
@@ -117,7 +119,6 @@ public class FenetrePrincipale extends BorderPane {
             System.out.println("Impossible de charger le fichier FXML du tableau de bord : " + e.getMessage());
 
         }
-        demarrer.setDisable(true); // désactivé jusqu'à ce que tous les champs soient remplis
     }
 
     private void verifierBoutonDemarrer() {
@@ -201,16 +202,16 @@ public class FenetrePrincipale extends BorderPane {
     }
 
     private void transfererValeur(TextField champ, java.util.function.DoubleConsumer methode) {
-        champ.textProperty().addListener((observable, ancienTexte, nouvTexte) -> { // ← remplace setOnKeyReleased
-            if (!nouvTexte.isEmpty()) {
+        champ.setOnKeyReleased(e -> {
+            String texte = champ.getText();
+            if (!texte.isEmpty()) {
                 try {
-                    double valeur = Double.parseDouble(nouvTexte); // ← utilise nouvTexte au lieu de champ.getText()
+                    double valeur = Double.parseDouble(texte);
                     //mettre la masse en double
                     //Abishanth:  il arrive quoi si simulation controller est null? on va crash je crois?
                     // correction pour debogage:
                     // if (simulationController != null) { }
                     methode.accept(valeur);
-                    verifierChamps(); // ← vérifier à chaque frappe
                 } catch (NumberFormatException ex) {
                     // Gestion d'erreur si ce n'est pas un chiffre
 
@@ -220,13 +221,7 @@ public class FenetrePrincipale extends BorderPane {
             }
         });
     }
-    private void verifierChamps() {
-        boolean tousRemplis = !parametres.getTextMasse().getText().isEmpty()
-                && !parametres.getTextSurface().getText().isEmpty()
-                && !parametres.getTextAltitudeInitiale().getText().isEmpty();
 
-        demarrer.setDisable(!tousRemplis);
-    }
 
     public VueAnimation getVueAnimation() {
         return animation;

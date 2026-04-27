@@ -4,6 +4,7 @@ import javafx.animation.AnimationTimer;
 
 //Classe passerelle entre la vue(FenetrePrincipale) et la logique(Simulateur)
 //Fourni les informations de la fenetrePrincipale jusqu'à la simulation
+
 public class SimulationController {
 
     private AnimationTimer timer;
@@ -17,24 +18,34 @@ public class SimulationController {
 
     //Boutons début et fin de la simulation
     private boolean simulationEnCours;
-    long dernierTemps = System.nanoTime();
+    private boolean aReintialise = true;
+    private boolean resetChrono;
+
     public SimulationController(FenetrePrincipale fenetre) {
         this.fenetre = fenetre;
 
         timer = new AnimationTimer() {
-
+            long dernierTemps = System.nanoTime();
 
             @Override
-            public void handle(long
-                                       temps) {
+            public void handle(long temps) {
+
+                // On synchronise dernierTemps avec le temps actuel de JavaFX.
+                if (resetChrono) {
+                    dernierTemps = temps;
+                    resetChrono = false;
+                    return;
+                }
+
+                // Calcul du delta temps
                 double deltaTemps = (temps - dernierTemps) * 1e-9;
                 dernierTemps = temps;
 
-                if (simulationEnCours && simulateur != null) {
+                // Mise à jour de la physique
+                if (simulateur != null) {
                     simulateur.update(deltaTemps);
                     fenetre.update();
 
-                    // Arrêter quand le parachutiste touche le sol (position Y >= altitude initiale)
                     if (simulateur.getParachutiste().getPosition().getY() >= hauteurInitialeUtilisateur) {
                         arreterSimulation();
                         fenetre.onAterissage();
@@ -44,16 +55,22 @@ public class SimulationController {
         };
     }
 
+
     //Appeler quand on clique sur un bouton démarrer
     public void lancerSimulation() {
-        System.out.println("masse: " + masseUtilisateur + " surface: " + surfaceUtilisateur + " hauteur: " + hauteurInitialeUtilisateur);
-        //créer un simulateur avec les paramètres de l'utilisateur
-
         this.simulationEnCours = true;
+
+        // FORCE la réinitialisation du chrono pour la prochaine frame du timer
+        this.resetChrono = true;
+
         fenetre.getParametres().setPeutEcrire(false);
         fenetre.getParametres().empecherEcrire();
-        simulateur = new Simulateur(masseUtilisateur, hauteurInitialeUtilisateur, surfaceUtilisateur);
-        dernierTemps = System.nanoTime(); // ← ajoute cette ligne
+
+        if (aReintialise) {
+            simulateur = new Simulateur(masseUtilisateur, hauteurInitialeUtilisateur, surfaceUtilisateur);
+        }
+        aReintialise = false;
+
         timer.start();
     }
 
@@ -110,15 +127,15 @@ public class SimulationController {
         return simulateur.getParachutiste().getMasse() * 9.81; // approximation F = mg
     }
 
+    public double getHauteurInitiale() {
+        return hauteurInitialeUtilisateur;
+    }
+
     //La méthode suivante permet à la classe FenetrePrincipale d'accéder au temps optimal.
     //Si le simulateur n'est pas encore créé (avant de mettre Démarrer), elle retourne 0.
-    public double getTempsOptimal(){
+    public double getTempsOptimal() {
         if (simulateur == null) return 0;
         return simulateur.getTempsOptimal();
     }
 
-
-    public double getHauteurInitiale() {
-        return hauteurInitialeUtilisateur;
-    }
 }

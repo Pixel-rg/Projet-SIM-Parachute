@@ -14,13 +14,15 @@ public class MoteurPhysique {
     private double tempsTotal = 0;
     private double surface = 0.6;
 
+
     public MoteurPhysique() {
         gravite = new Gravite();
         resistanceAir = new ResistanceAir();
     }
 
     public void update(Parachutiste parachutiste, double temps) {
-        tempsTotal += temps;
+
+            this.tempsTotal += temps;
 
         Point2D forceTotale = new Point2D(0, 0);
         forceTotale = forceTotale.add(gravite.calculForceGravite(parachutiste));
@@ -32,6 +34,9 @@ public class MoteurPhysique {
         parachutiste.setPosition(parachutiste.position.add(parachutiste.vitesse.multiply(temps)));
 
         // Ouvrir le parachute automatiquement si vitesse dépasse seuil sécuritaire
+        // Dès que la vitesse du parachutiste atteint la vitesse sécuritaire ou celle de la
+        // vitesse terminale du parachutiste, on applique
+        // à cet instant précis la variable du temps optimal.
         if (!parachutiste.estOuvert() && parachutiste.vitesse.getY() >= VITESSESECURITAIRE) {
             parachutiste.ouvrirParachute();
             tempsOptimal = tempsTotal;
@@ -45,15 +50,14 @@ public class MoteurPhysique {
         double rho = 1.225;
         double masse = parachutiste.getMasse();
         double cd = parachutiste.getCoefficientTrainee();
-        // Dès que la vitesse du parachutiste atteint la vitesse sécuritaire ou celle de la
-        // vitesse terminale du parachutiste, on applique
-        // à cet instant précis la variable du temps optimal.
+
         if (!parachutiste.estOuvert()) {
-            surface = (resistanceAir.getSurface() == 0) ? 0.6 : resistanceAir.getSurface(); // ← seul changement
+            surface = resistanceAir.getSurface();
         }
         // Source: https://tpeps7.wordpress.com/2015/01/12/la-resistance-de-lair/
         return Math.sqrt((2 * masse * GRAVITE) / (rho * surface * cd));
     }
+
     public double getTempsTotal() {
         return tempsTotal;
     }

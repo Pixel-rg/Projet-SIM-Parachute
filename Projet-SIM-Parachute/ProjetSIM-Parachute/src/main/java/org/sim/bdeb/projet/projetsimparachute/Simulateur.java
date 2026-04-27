@@ -14,6 +14,7 @@ public class Simulateur {
                 masseChoisie
         );
         this.moteurPhysique = new MoteurPhysique();
+
     }
 
     public void update(double deltaTemps) {
@@ -28,6 +29,7 @@ public class Simulateur {
     public double getTempsTotal() {
         return moteurPhysique.getTempsTotal();
     }
+
 
     // La méthode suivante permet à SimulationController d'accéder à la donnée calculé dans le MoteurPhysique
     public double getTempsOptimal(){
