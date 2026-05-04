@@ -2,12 +2,15 @@ package org.sim.bdeb.projet.projetsimparachute;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -96,29 +99,36 @@ public class FenetrePrincipale extends BorderPane {
         }
     }
 
-    private void configurerDemarrer() {
+    private void configurerBarreDeControle() {
         try {
-            // 1. Charger le fichier FXML
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("Demarrer.fxml"));
-            loader.setController(this);
+            // 1. Créer le conteneur horizontal
+            HBox barreHorizontale = new HBox(); // Espace de 50px entre les deux blocs
+            barreHorizontale.setAlignment(Pos.CENTER); // Centre le tout horizontalement
 
+            // 2. Charger le bloc Démarrer (le VBox) -> Sera à GAUCHE
+            FXMLLoader loaderDemarrer = new FXMLLoader(getClass().getResource("Demarrer.fxml"));
+            loaderDemarrer.setController(this);
+            Parent interfaceDemarrer = loaderDemarrer.load();
 
-            // 2. Transformer le FXML en un objet Java (structureTitre devient un StackPane)
-            Parent structureTitre = loader.load();
+            // 3. Charger le bloc Accélérer (les boutons) -> Sera à DROITE
+            FXMLLoader loaderAccelerer = new FXMLLoader(getClass().getResource("Accelerer.fxml"));
+            loaderAccelerer.setController(this);
+            Parent boutonsAccelerer = loaderAccelerer.load();
 
-            // 3. Appliquer les réglages de positionnement du BorderPane
-            setAlignment(structureTitre, Pos.CENTER);
+            // 4. L'ordre d'ajout ici détermine l'ordre à l'écran
+            barreHorizontale.getChildren().addAll(interfaceDemarrer, boutonsAccelerer);
 
-            styleOriginalVert = demarrer.getStyle();
-            verifierBoutonDemarrer();
-            // 4. Placer le titre en haut de la fenêtre
-            this.setBottom(structureTitre);
+            // 5. Fixer le tout au bas du BorderPane
+            this.setBottom(barreHorizontale);
 
+            // Initialisation de la logique du bouton
+            if (demarrer != null) {
+                styleOriginalVert = demarrer.getStyle();
+                verifierBoutonDemarrer();
+            }
 
         } catch (IOException e) {
-            // En cas d'erreur (fichier mal nommé ou mal placé)
-            System.out.println("Impossible de charger le fichier FXML du tableau de bord : " + e.getMessage());
-
+            System.out.println("Erreur de chargement des interfaces : " + e.getMessage());
         }
     }
 
@@ -179,9 +189,14 @@ public class FenetrePrincipale extends BorderPane {
         this.setCenter(animation);
         this.setRight(stat);
 
+
+
         configurerTitre();
-        configurerDemarrer();
+        configurerBarreDeControle();
     }
+
+
+
 
     // ------------------INTERFACE PARAMETRES-----------------------
 

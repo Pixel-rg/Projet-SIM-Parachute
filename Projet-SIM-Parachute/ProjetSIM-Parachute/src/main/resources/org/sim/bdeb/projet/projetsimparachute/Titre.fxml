@@ -10,7 +10,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<StackPane id=" #3A86FF" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="65.0" style="-fx-background-color: linear-gradient(to bottom, #0B132B, #1C2541);;" styleClass="#1C2541" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1">
+<StackPane id=" #3A86FF" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="65.0" prefWidth="1016.0" style="-fx-background-color: linear-gradient(to bottom, #0B132B, #1C2541);;" styleClass="#1C2541" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1">
    <padding>
       <Insets bottom="20.0" top="20.0" />
    </padding>
@@ -20,7 +20,7 @@
             <Font size="23.0" />
          </font>
       </Text>
-      <Line endX="900.0" endY="-2.071063995361328" startX="-100.0" startY="-2.0710678100585938" stroke="#9fb3c8" strokeWidth="5.0" StackPane.alignment="TOP_CENTER">
+      <Line endX="900.0" endY="-2.071063995361328" startX="-117.74876403808594" startY="-0.60662841796875" stroke="#9fb3c8" strokeWidth="5.0" StackPane.alignment="TOP_CENTER">
          <fill>
             <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
                <stops>
