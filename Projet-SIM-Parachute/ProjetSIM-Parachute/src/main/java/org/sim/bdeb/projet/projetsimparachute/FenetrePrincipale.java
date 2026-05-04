@@ -30,6 +30,12 @@ public class FenetrePrincipale extends BorderPane {
     @FXML
     private Button reintialiser;
 
+    @FXML
+    private Button boutonFoisUn;
+
+    @FXML
+    private Button boutonFoisDix;
+
     private String styleOriginalVert; // Variable pour stocker ton design SceneBuilder
 
     public FenetrePrincipale(Stage stage, SimulationController simulation) {
