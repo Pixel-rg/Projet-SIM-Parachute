@@ -120,12 +120,15 @@ public class FenetrePrincipale extends BorderPane {
             FXMLLoader loaderAccelerer = new FXMLLoader(getClass().getResource("Accelerer.fxml"));
             loaderAccelerer.setController(this);
             Parent boutonsAccelerer = loaderAccelerer.load();
+            configurerBoutonsVitesse();
 
             // 4. L'ordre d'ajout ici détermine l'ordre à l'écran
             barreHorizontale.getChildren().addAll(interfaceDemarrer, boutonsAccelerer);
 
             // 5. Fixer le tout au bas du BorderPane
             this.setBottom(barreHorizontale);
+
+
 
             // Initialisation de la logique du bouton
             if (demarrer != null) {
@@ -137,6 +140,25 @@ public class FenetrePrincipale extends BorderPane {
             System.out.println("Erreur de chargement des interfaces : " + e.getMessage());
         }
     }
+
+    private void configurerBoutonsVitesse() {
+        // Action pour le bouton x1
+        boutonFoisUn.setOnAction(event -> {
+            if (simulationController != null) {
+                simulationController.setMultiplicateurVitesse(1.0);
+
+            }
+        });
+
+        // Action pour le bouton x10
+        boutonFoisDix.setOnAction(event -> {
+            if (simulationController != null) {
+                simulationController.setMultiplicateurVitesse(10.0);
+
+            }
+        });
+    }
+
 
     private void verifierBoutonDemarrer() {
 
@@ -153,6 +175,17 @@ public class FenetrePrincipale extends BorderPane {
 
                 if (!parametres.getTextMasse().getText().isEmpty() && !parametres.getTextSurface().getText().isEmpty()
                         && !parametres.getTextAltitudeInitiale().getText().isEmpty()) {
+
+                    // On récupère les valeurs finales (qui ont été corrigées par les validateurs)
+                    double masseFinale = Double.parseDouble(parametres.getTextMasse().getText());
+                    double surfaceFinale = Double.parseDouble(parametres.getTextSurface().getText());
+                    double altitudeFinale = Double.parseDouble(parametres.getTextAltitudeInitiale().getText());
+
+                    // On force la mise à jour du contrôleur avec les vrais chiffres affichés
+                    simulationController.setMasseUtilisateur(masseFinale);
+                    simulationController.setSurfaceUtilisateur(surfaceFinale);
+                    simulationController.setHauteurInitialeUtilisateur(altitudeFinale);
+
                     simulationController.setSimulationEnCours(true);
                     simulationController.lancerSimulation();
                     boutonDemarrerEnRouge();
@@ -199,9 +232,8 @@ public class FenetrePrincipale extends BorderPane {
 
         configurerTitre();
         configurerBarreDeControle();
+
     }
-
-
 
 
     // ------------------INTERFACE PARAMETRES-----------------------

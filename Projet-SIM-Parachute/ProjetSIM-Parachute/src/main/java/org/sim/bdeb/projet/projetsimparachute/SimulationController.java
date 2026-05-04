@@ -9,6 +9,7 @@ import javafx.scene.layout.VBox;
 public class SimulationController {
 
     private AnimationTimer timer;
+    private double multiplicateurVitesse = 1.0; // Par défaut à 1x
     private Simulateur simulateur;
     private FenetrePrincipale fenetre;
 
@@ -43,9 +44,11 @@ public class SimulationController {
                 double deltaTemps = (temps - dernierTemps) * 1e-9;
                 dernierTemps = temps;
 
+                double deltaTempsSimule = deltaTemps * multiplicateurVitesse;
+
                 // Mise à jour de la physique
                 if (simulateur != null) {
-                    simulateur.update(deltaTemps);
+                    simulateur.update(deltaTempsSimule);
                     fenetre.update();
 
                     if (simulateur.getParachutiste().getPosition().getY() >= hauteurInitialeUtilisateur) {
@@ -90,6 +93,10 @@ public class SimulationController {
         simulationEnCours = false;
     }
 
+    // changer la vitesse de simulation
+    public void setMultiplicateurVitesse(double facteur) {
+        this.multiplicateurVitesse = facteur;
+    }
 
     public void setMasseUtilisateur(double masseUtilisateur) {
         this.masseUtilisateur = masseUtilisateur;
@@ -149,5 +156,6 @@ public class SimulationController {
         if (simulateur == null) return 0;
         return simulateur.getTempsOptimal();
     }
+
 
 }
