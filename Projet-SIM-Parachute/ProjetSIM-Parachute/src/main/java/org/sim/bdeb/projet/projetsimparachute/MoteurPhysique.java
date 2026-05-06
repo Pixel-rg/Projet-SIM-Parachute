@@ -30,8 +30,8 @@ public class MoteurPhysique {
 
         Point2D acceleration = forceTotale.multiply(1.0 / parachutiste.getMasse());
 
-        parachutiste.setVitesse(parachutiste.vitesse.add(acceleration.multiply(temps)));
-        parachutiste.setPosition(parachutiste.position.add(parachutiste.vitesse.multiply(temps)));
+        parachutiste.setAcceleration(acceleration);
+        parachutiste.update(temps);
 
         // Ouvrir le parachute automatiquement si vitesse dépasse seuil sécuritaire
         // Dès que la vitesse du parachutiste atteint la vitesse sécuritaire ou celle de la
@@ -61,6 +61,11 @@ public class MoteurPhysique {
     public double getTempsTotal() {
         return tempsTotal;
     }
+
+    public void setTempsTotal(double tempsTotal){
+        this.tempsTotal = tempsTotal;
+    }
+
 
     //La méthode suivante permet de retourner la valeur du temps optimal
     //calculé précedemment.

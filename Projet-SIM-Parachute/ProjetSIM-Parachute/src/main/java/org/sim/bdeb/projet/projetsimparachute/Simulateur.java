@@ -10,6 +10,7 @@ public class Simulateur {
         this.parachutiste = new Parachutiste(
                 new Point2D(0, 0),   // position Y = 0 (distance parcourue depuis départ)
                 new Point2D(0, 0),
+                new Point2D(0,0),
                 surfacePara,
                 masseChoisie
         );
@@ -28,6 +29,10 @@ public class Simulateur {
     // Exposer le temps total du moteur physique
     public double getTempsTotal() {
         return moteurPhysique.getTempsTotal();
+    }
+
+    public void setTempsTotal(double tempsTotal){
+        moteurPhysique.setTempsTotal(tempsTotal);
     }
 
 

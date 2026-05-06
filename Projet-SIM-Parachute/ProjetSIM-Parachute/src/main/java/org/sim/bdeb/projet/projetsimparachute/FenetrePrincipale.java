@@ -48,7 +48,7 @@ public class FenetrePrincipale extends BorderPane {
         creerFenetre();
 
         //Créer la scène à chaque fois que la fenetre est instancié, donc chaque fois quon démarre le appController
-        Scene scene = new Scene(this, 1000, 700);
+        Scene scene = new Scene(this, 1000, 720);
         this.stage.setTitle("Simulateur de Parachute");
         this.stage.setScene(scene);
     }
@@ -66,12 +66,13 @@ public class FenetrePrincipale extends BorderPane {
 
 
         // Mettre à jour les stats
+        double facteur = simulationController.getMultiplicateurVitesse(); //Accélerer les nuages
         stat.update(vitesse, altitude, temps, force);
 
         parametres.updateTempsOptimal(tempsOpt);
 
         // Mettre à jour l'animation
-        animation.update(vitesse, altitude, hauteurInitiale);
+        animation.update(vitesse, altitude, hauteurInitiale,facteur);
         animation.dessinerParachutiste(paraOuvert);
     }
 
@@ -198,11 +199,18 @@ public class FenetrePrincipale extends BorderPane {
     private void configurerBoutonReinitialiser() {
         reintialiser.setOnAction(event -> {
             if (simulationController == null) return;
+
+            // Arrêter la physique et remettre les calculs à zéro
             simulationController.arreterSimulation();
-            demarrer.setStyle(styleOriginalVert);
-            demarrer.setText("Démarrer");
-            // Remettre les stats à zéro
-            stat.update(0, 0, 0, 0);
+            simulationController.reinitialiserPhysique();
+
+            // Créer de nouvelles instances des vues
+            this.parametres = new InterfaceParametres();
+            this.animation = new VueAnimation();
+            this.stat = new VueStatistique();
+
+            creerFenetre();
+
         });
     }
 
@@ -217,7 +225,6 @@ public class FenetrePrincipale extends BorderPane {
 
 
     private void creerFenetre() {
-        //        configurerBoutonLancer();
 
         //EVENTS pour donner les paramètres au Controller
         transfererValeurMasse();
@@ -229,9 +236,9 @@ public class FenetrePrincipale extends BorderPane {
         this.setRight(stat);
 
 
-
         configurerTitre();
         configurerBarreDeControle();
+        configurerBoutonReinitialiser();
 
     }
 
@@ -290,6 +297,8 @@ public class FenetrePrincipale extends BorderPane {
     public void setSimulationController(SimulationController simulationController) {
         this.simulationController = simulationController;
     }
+
+
 
     public InterfaceParametres getParametres() {
         return parametres;

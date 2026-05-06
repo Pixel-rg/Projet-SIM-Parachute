@@ -17,6 +17,8 @@ public class VueAnimation extends Pane {
     private ImageView cielVue = new ImageView(background);
     private ImageView solVue = new ImageView(solAtterissage);
 
+    private Avion avion = new Avion(new Point2D(PARA_X/6,Y_HAUT),new Point2D(0,0),new Point2D(0,0));
+
     private Image parachuteFerme = new Image("ParachuteFerme.png");
     private Image parachuteOuvert = new Image("ParachuteOuvert.png");
     private ImageView parachutisteVue = new ImageView(parachuteFerme);
@@ -26,7 +28,7 @@ public class VueAnimation extends Pane {
     public static final double POSITIONY_TITRE = 65;
     public static final double POSITIONY_DEMARRER = 535;
 
-    // Zone d'animation verticale sur l'écran (en pixels)
+    // Zone d'animation verticale sur l'écran
     private static final double Y_HAUT = 40;
     private static final double Y_BAS = 430;
 
@@ -35,14 +37,24 @@ public class VueAnimation extends Pane {
     private static final double PARA_WIDTH = 225;
 
     public VueAnimation() {
+
+        parachutisteVue.setVisible(false); //On le voit pas au début (est dans l'avion)
+
         cielVue.setFitWidth(1080);
         cielVue.setFitHeight(720);
-        this.getChildren().add(cielVue);
+
+        // Le sol doit être initialement hors de vue ou tout en bas
         solVue.setFitWidth(1080);
-        solVue.setFitHeight(720);
-        this.getChildren().add(solVue);
+        solVue.setFitHeight(200); // Réduire la hauteur
+        solVue.setY(720);         // Le placer sous l'écran au début
+
+        //le dernier ajouté est au-dessus
+        this.getChildren().addAll(cielVue, solVue);
 
         spawnerNuages();
+
+        // L'avion sera devant les nuages car ajouté après
+        this.getChildren().add(avion.getAvionView());
 
         parachutisteVue.setFitWidth(PARA_WIDTH);
         parachutisteVue.setFitHeight(225);
@@ -56,46 +68,36 @@ public class VueAnimation extends Pane {
             double randomVitesse = ThreadLocalRandom.current().nextDouble(0.5, 2.5);
             double randomX = ThreadLocalRandom.current().nextDouble(211, 500);
             double randomY = ThreadLocalRandom.current().nextDouble(0,300);
-            Nuage n = new Nuage(new Point2D(randomX - 200, randomY), new Point2D(0, -randomVitesse));
+            Nuage n = new Nuage(new Point2D(randomX - 200, randomY), new Point2D(0, -randomVitesse),new Point2D(0,0));
             nuages.add(n);
             this.getChildren().add(n.getNuageView());
         }
     }
 
-    /**
-     * Met à jour la scène.
-     * @param vitesseParachutiste vitesse physique (m/s) — utilisée pour la vitesse des nuages
-     * @param altitudeActuelle    altitude actuelle du parachutiste (m)
-     * @param hauteurInitiale     altitude de départ (m)
-     */
-    public void update(double vitesseParachutiste, double altitudeActuelle, double hauteurInitiale) {
-        // Déplacer le parachutiste visuellement (0 = haut de l'écran, hauteurInitiale = bas)
-        double progress = 1.0 - (altitudeActuelle / hauteurInitiale); // 0.0 (départ) → 1.0 (sol)
+
+    public void update(double vitessePara, double alt, double hautInit, double facteur) {
+        double progress = 1.0 - (alt / hautInit);
         double yEcran = Y_HAUT + progress * (Y_BAS - Y_HAUT);
         parachutisteVue.setY(yEcran);
 
-        // Nuages montent à une vitesse proportionnelle à la vitesse du parachutiste
-        double vitesseNuages = Math.max(0.5, vitesseParachutiste * 0.4); //Boost artificiel de la vitesse (*0.5)
-
-        List<Nuage> horsEcran = new ArrayList<>();
-
-        for (Nuage n : nuages) {
-            n.setVitesse(new Point2D(0, -vitesseNuages));
-            n.update();
-            if (n.getPosition().getY() < POSITIONY_TITRE - 200) {
-                horsEcran.add(n);
-            }
+        // Faire apparaître le sol quand on approche de 0m
+        if (alt < 100) {
+            solVue.setY(720 - (100 - alt) * 2); // Le sol monte graduellement
+        } else {
+            solVue.setY(720);
         }
 
-        for (Nuage n : horsEcran) {
-            this.getChildren().remove(n.getNuageView());
-            nuages.remove(n);
+        double vitesseDefilement = vitessePara * 0.2 * facteur;
+        avion.getAvionView().setY(avion.getAvionView().getY() - vitesseDefilement + 0.2); //+0,2 pour effet naturel
 
-            double randomX = ThreadLocalRandom.current().nextDouble(POSITIONX_PARAMETRE - 250, POSITIONX_STAT - 250);
-            double randomVitesse = ThreadLocalRandom.current().nextDouble(0.5, 2.5);
-            Nuage nouveau = new Nuage(new Point2D(randomX, 540), new Point2D(0, -vitesseNuages *0.02));
-            nuages.add(nouveau);
-            this.getChildren().add(nouveau.getNuageView());
+        // Déplacement des nuages
+        double vitesseVisuelle = vitessePara * 0.2 * facteur;
+        for (Nuage n : nuages) {
+            n.getNuageView().setY(n.getNuageView().getY() - vitesseVisuelle);
+            if (n.getNuageView().getY() < -150) {
+                n.getNuageView().setY(720);
+                n.getNuageView().setX(ThreadLocalRandom.current().nextDouble(0, 800));
+            }
         }
     }
 
@@ -107,4 +109,12 @@ public class VueAnimation extends Pane {
             parachutisteVue.setImage(parachuteFerme);
         }
     }
+
+    //afficher parachutiste quand on lance la simulation
+    public void setVisibleSimulation(boolean visible) {
+        parachutisteVue.setVisible(visible);
+        avion.getAvionView().setVisible(visible);
+    }
+
+
 }

@@ -11,12 +11,13 @@ public class Parachutiste extends ObjetPhysique{
 
     // il faudra avoir un coeff trainee fixe pour garder la situation plus realiste
     //Mikail: Oui, coefficient de trainée augmente dans le parachute est ouvert
-    public Parachutiste(Point2D position, Point2D vitesse, double surface, double masse){
-        super(position,vitesse);
+    public Parachutiste(Point2D position, Point2D vitesse, Point2D acceleration, double surface, double masse){
+        super(position,vitesse,acceleration);
         this.surface = surface;
         this.coefficientTrainee = 1;
         this.masseTotale = masse;
     }
+
 
     public double getSurface() {
         return surface;
@@ -47,5 +48,9 @@ public class Parachutiste extends ObjetPhysique{
     }
     public boolean ouvrirParachute() {
         return parachuteOuvert = true;
+    }
+
+    public void setParachuteOuvert(boolean parachuteOuvert) {
+        this.parachuteOuvert = parachuteOuvert;
     }
 }

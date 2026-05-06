@@ -1,6 +1,7 @@
 package org.sim.bdeb.projet.projetsimparachute;
 
 import javafx.animation.AnimationTimer;
+import javafx.geometry.Point2D;
 import javafx.scene.layout.VBox;
 
 //Classe passerelle entre la vue(FenetrePrincipale) et la logique(Simulateur)
@@ -64,19 +65,17 @@ public class SimulationController {
     //Appeler quand on clique sur un bouton démarrer
     public void lancerSimulation() {
         nbCliquerDemarrer++;
-        //        if(nbCliquerDemarrer == 1){
-//            fenetre.transfererValeurMasse();
-//            fenetre.transfererValeurSurface();
-//            fenetre.transfererValeurAltitude();
-//        }
-//
+
         this.simulationEnCours = true;
+
 
         // FORCE la réinitialisation du chrono pour la prochaine frame du timer
         this.resetChrono = true;
 
         fenetre.getParametres().setPeutEcrire(false);
         fenetre.getParametres().empecherEcrire();
+
+        fenetre.getVueAnimation().setVisibleSimulation(true); //Afficher le parachutiste
 
         if (aReintialise) {
             simulateur = new Simulateur(masseUtilisateur, hauteurInitialeUtilisateur, surfaceUtilisateur);
@@ -91,6 +90,29 @@ public class SimulationController {
     public void arreterSimulation() {
         timer.stop();
         simulationEnCours = false;
+    }
+
+    public void reinitialiserPhysique() {
+        // 1. Reset des paramètres de configuration (Force l'utilisateur à retaper)
+        this.masseUtilisateur = 0;
+        this.surfaceUtilisateur = 0;
+        this.hauteurInitialeUtilisateur = 0;
+
+        // 2. Reset du temps et du moteur
+        simulateur.setTempsTotal(0);
+        this.simulationEnCours = false;
+        this.resetChrono = true;
+
+        // 3. Reset du Parachutiste (L'objet physique)
+        Parachutiste parachutiste = simulateur.getParachutiste();
+        parachutiste.setVitesse(new Point2D(0, 0));
+        parachutiste.setPosition(new Point2D(0, 0)); // Il revient au sol (0,0)
+        parachutiste.setParachuteOuvert(false);
+
+        // Attention : Ne mets pas la surface à 0 ici si elle est utilisée
+        // immédiatement dans un calcul de division dans le moteur.
+        parachutiste.setSurface(0);
+        parachutiste.setCoefficientTrainee(0);
     }
 
     // changer la vitesse de simulation
@@ -157,5 +179,11 @@ public class SimulationController {
         return simulateur.getTempsOptimal();
     }
 
+    public double getMultiplicateurVitesse() {
+        return multiplicateurVitesse;
+    }
 
+    public Point2D getAccelerationParachutiste(){
+        return simulateur.getParachutiste().getAcceleration();
+    }
 }

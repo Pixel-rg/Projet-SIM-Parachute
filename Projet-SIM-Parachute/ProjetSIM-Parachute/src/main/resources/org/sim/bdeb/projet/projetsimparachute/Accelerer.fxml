@@ -7,7 +7,6 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-
 <AnchorPane prefHeight="149.0" prefWidth="251.0" style="-fx-background-color: linear-gradient(to bottom, #0B132B, #1C2541);" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <Button fx:id="boutonFoisDix" layoutX="30.0" layoutY="81.0" mnemonicParsing="false" prefHeight="59.0" prefWidth="73.0" style="-fx-background-radius: 10; -fx-background-color: #FEE440;" text="x10">
@@ -15,9 +14,9 @@
             <Font name="System Bold" size="24.0" />
          </font>
       </Button>
-      <ImageView fitHeight="105.0" fitWidth="107.0" layoutX="95.0" layoutY="24.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="107.0" fitWidth="123.0" layoutX="95.0" layoutY="24.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../../../../../../../../../../go-removebg-preview.png" />
+            <Image url="@../../../../../LogoVitesse.png" />
          </image>
       </ImageView>
       <Button fx:id="boutonFoisUn" layoutX="30.0" layoutY="18.0" mnemonicParsing="false" prefHeight="58.0" prefWidth="70.0" style="-fx-background-radius: 10; -fx-background-color: #4CC9F0;" text="x1">

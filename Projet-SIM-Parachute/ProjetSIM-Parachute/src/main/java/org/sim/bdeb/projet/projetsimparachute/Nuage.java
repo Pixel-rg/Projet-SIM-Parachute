@@ -10,16 +10,16 @@ public class Nuage extends ObjetPhysique {
     private static final double LARGEUR_ECRAN = 1080;
     private static final double LARGEUR_NUAGE = 300;
 
-    public Nuage(Point2D position, Point2D vitesse) {
-        super(position, vitesse);
+    public Nuage(Point2D position, Point2D vitesse,Point2D acceleration) {
+        super(position, vitesse,acceleration);
         nuageView.setFitWidth(LARGEUR_NUAGE);
         nuageView.setFitHeight(150);
         nuageView.setX(position.getX());
         nuageView.setY(position.getY());
     }
 
-    public void update() {
-        position = position.add(vitesse);
+    public void update(double deltaTemps) {
+        super.update(deltaTemps);
 
         if (position.getX() + LARGEUR_NUAGE < 0) {
             position = new Point2D(LARGEUR_ECRAN, position.getY());
