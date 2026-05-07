@@ -17,9 +17,9 @@ public class Simulateur {
         this.moteurPhysique = new MoteurPhysique();
 
     }
-
-    public void update(double deltaTemps) {
-        moteurPhysique.update(parachutiste, deltaTemps);
+    // ABISHANTH: J AI UN METHODE POUR PRENDRE ALTITUDE LIVE
+    public void update(double deltaTemps, double altitude) {
+        moteurPhysique.update(parachutiste, deltaTemps,altitude);
     }
 
     public Parachutiste getParachutiste() {

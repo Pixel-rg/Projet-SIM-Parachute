@@ -13,6 +13,8 @@ public class MoteurPhysique {
     private double tempsOptimal;
     private double tempsTotal = 0;
     private double surface = 0.6;
+    private double altitude;
+
 
 
     public MoteurPhysique() {
@@ -20,7 +22,7 @@ public class MoteurPhysique {
         resistanceAir = new ResistanceAir();
     }
 
-    public void update(Parachutiste parachutiste, double temps) {
+    public void update(Parachutiste parachutiste, double temps,double altitudeActuelle) {
 
             this.tempsTotal += temps;
 
@@ -37,13 +39,15 @@ public class MoteurPhysique {
         // Dès que la vitesse du parachutiste atteint la vitesse sécuritaire ou celle de la
         // vitesse terminale du parachutiste, on applique
         // à cet instant précis la variable du temps optimal.
-        if (!parachutiste.estOuvert() && parachutiste.vitesse.getY() >= VITESSESECURITAIRE) {
-            parachutiste.ouvrirParachute();
-            tempsOptimal = tempsTotal;
-        } else if (!parachutiste.estOuvert() && parachutiste.vitesse.getY() >= calculerVitesseTerminale(parachutiste)*0.98) {
-            parachutiste.ouvrirParachute();
-            tempsOptimal = tempsTotal;
-        }
+
+        //ABISHANTH: IDK WHERE THE BUG IS PLS HELP CLASS I CHANGED WAS METHODS : MOTEURPHYS, SIMULATEUR, SIMCONTROLLER,UPDATE PHYSIQUE
+
+//        if (!parachutiste.estOuvert() && altitudeActuelle <= calculerAltitudeMin(parachutiste)) {
+//            System.out.println(altitudeActuelle);
+//            parachutiste.ouvrirParachute();
+//            tempsOptimal = tempsTotal;
+//        }
+
     }
 
     public double calculerVitesseTerminale(Parachutiste parachutiste) {
@@ -56,6 +60,16 @@ public class MoteurPhysique {
         }
         // Source: https://tpeps7.wordpress.com/2015/01/12/la-resistance-de-lair/
         return Math.sqrt((2 * masse * GRAVITE) / (rho * surface * cd));
+    }
+
+    public double calculerAltitudeMin(Parachutiste parachutiste) {
+        double vTerminale = calculerVitesseTerminale(parachutiste);
+        double altitudeSecuritaire = 762; //https://skydivecalifornia.com/blog/when-skydivers-pull-parachutes/
+        double transitionEntreOuverture = 4; //https://www.ecole-parachutisme.fr/guide-saut-en-parachute/vitesse-chute-libre
+
+        //altitude minimale = altitude sécuritaire + distance de délai de la transition
+        return altitudeSecuritaire + transitionEntreOuverture * vTerminale;
+
     }
 
     public double getTempsTotal() {

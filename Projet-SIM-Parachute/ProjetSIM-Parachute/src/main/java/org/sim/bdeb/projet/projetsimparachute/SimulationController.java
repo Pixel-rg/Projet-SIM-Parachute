@@ -49,7 +49,9 @@ public class SimulationController {
 
                 // Mise à jour de la physique
                 if (simulateur != null) {
-                    simulateur.update(deltaTempsSimule);
+                    // ABISHANTH: J AI UN METHODE POUR PRENDRE ALTITUDE LIVE
+                    double altitudePara = getAltitude();
+                    simulateur.update(deltaTempsSimule,altitudePara);
                     fenetre.update();
 
                     if (simulateur.getParachutiste().getPosition().getY() >= hauteurInitialeUtilisateur) {
@@ -96,7 +98,9 @@ public class SimulationController {
         // 1. Reset des paramètres de configuration (Force l'utilisateur à retaper)
         this.masseUtilisateur = 0;
         this.surfaceUtilisateur = 0;
-        this.hauteurInitialeUtilisateur = 0;
+        this.hauteurInitialeUtilisateur = 0; // Abishanth: je ne sais pas comment bloquer lol. En effet, lorsque je
+        // reinitilise, le parachute ouvre directement , car hauteur initale est "0" si qui fait ma condition dans moteur
+        //physique vrai, c une therie je ne suis pas sur si c vrai
 
         // 2. Reset du temps et du moteur
         simulateur.setTempsTotal(0);
