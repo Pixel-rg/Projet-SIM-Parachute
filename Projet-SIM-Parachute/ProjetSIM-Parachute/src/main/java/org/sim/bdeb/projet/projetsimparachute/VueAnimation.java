@@ -102,11 +102,13 @@ public class VueAnimation extends Pane {
 
         // Déplacement des nuages
         double vitesseVisuelle = vitessePara * 0.2 * facteur;
-        for (Nuage n : nuages) {
-            n.getNuageView().setY(n.getNuageView().getY() - vitesseVisuelle);
-            if (n.getNuageView().getY() < -150) {
-                n.getNuageView().setY(720);
-                n.getNuageView().setX(ThreadLocalRandom.current().nextDouble(0, 800));
+        if(alt > 150) {
+            for (Nuage n : nuages) {
+                n.getNuageView().setY(n.getNuageView().getY() - vitesseVisuelle);
+                if (n.getNuageView().getY() < -150) {
+                    n.getNuageView().setY(720);
+                    n.getNuageView().setX(ThreadLocalRandom.current().nextDouble(0, 800));
+                }
             }
         }
     }
