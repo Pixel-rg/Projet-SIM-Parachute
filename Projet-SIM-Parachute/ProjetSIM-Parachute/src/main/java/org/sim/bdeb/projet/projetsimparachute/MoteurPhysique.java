@@ -42,11 +42,11 @@ public class MoteurPhysique {
 
         //ABISHANTH: IDK WHERE THE BUG IS PLS HELP CLASS I CHANGED WAS METHODS : MOTEURPHYS, SIMULATEUR, SIMCONTROLLER,UPDATE PHYSIQUE
 
-//        if (!parachutiste.estOuvert() && altitudeActuelle <= calculerAltitudeMin(parachutiste)) {
-//            System.out.println(altitudeActuelle);
-//            parachutiste.ouvrirParachute();
-//            tempsOptimal = tempsTotal;
-//        }
+        if (!parachutiste.estOuvert() && altitudeActuelle <= calculerAltitudeMin(parachutiste)) {
+            System.out.println(altitudeActuelle);
+            parachutiste.ouvrirParachute();
+            tempsOptimal = tempsTotal;
+        }
 
     }
 

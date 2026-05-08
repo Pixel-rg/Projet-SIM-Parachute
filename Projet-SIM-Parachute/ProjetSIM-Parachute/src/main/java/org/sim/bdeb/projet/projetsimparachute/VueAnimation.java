@@ -16,11 +16,13 @@ public class VueAnimation extends Pane {
     private Image solAtterissage = new Image("Sol.png");
     private ImageView cielVue = new ImageView(background);
     private ImageView solVue = new ImageView(solAtterissage);
+    private boolean estAuSol =  false;
 
     private Avion avion = new Avion(new Point2D(PARA_X/6,Y_HAUT),new Point2D(0,0),new Point2D(0,0));
 
     private Image parachuteFerme = new Image("ParachuteFerme.png");
     private Image parachuteOuvert = new Image("ParachuteOuvert.png");
+    private Image parachuteAtterit = new Image("ParachutisteAtterit.png");
     private ImageView parachutisteVue = new ImageView(parachuteFerme);
 
     public static final double POSITIONX_PARAMETRE = 211;
@@ -30,7 +32,7 @@ public class VueAnimation extends Pane {
 
     // Zone d'animation verticale sur l'écran
     private static final double Y_HAUT = 40;
-    private static final double Y_BAS = 430;
+    private static final double Y_BAS = 300;
 
     // Position X fixe du parachutiste au centre de l'animation
     private static final double PARA_X = 185;
@@ -45,7 +47,7 @@ public class VueAnimation extends Pane {
 
         // Le sol doit être initialement hors de vue ou tout en bas
         solVue.setFitWidth(1080);
-        solVue.setFitHeight(200); // Réduire la hauteur
+        solVue.setFitHeight(720); // Réduire la hauteur
         solVue.setY(720);         // Le placer sous l'écran au début
 
         //le dernier ajouté est au-dessus
@@ -80,9 +82,17 @@ public class VueAnimation extends Pane {
         double yEcran = Y_HAUT + progress * (Y_BAS - Y_HAUT);
         parachutisteVue.setY(yEcran);
 
+        if(!estAuSol){
+            parachutisteVue.setY(yEcran);
+        }
+        if (alt ==0){
+            parachutisteVue.setY(400);
+            estAuSol = true;
+        }
+
         // Faire apparaître le sol quand on approche de 0m
-        if (alt < 100) {
-            solVue.setY(720 - (100 - alt) * 2); // Le sol monte graduellement
+        if (alt < 720) {
+            solVue.setY(525 - (15 - alt) * 2- solVue.getFitHeight()); // Le sol monte graduellement
         } else {
             solVue.setY(720);
         }
@@ -103,10 +113,17 @@ public class VueAnimation extends Pane {
 
     public void dessinerParachutiste(boolean paraOuvert) {
         parachutisteVue.setX(PARA_X);
-        if (paraOuvert) {
-            parachutisteVue.setImage(parachuteOuvert);
+        if(estAuSol){
+            parachutisteVue.setFitHeight(115);
+            parachutisteVue.setFitWidth(170);
+            parachutisteVue.setImage(parachuteAtterit);
         } else {
-            parachutisteVue.setImage(parachuteFerme);
+            parachutisteVue.setFitHeight(225);
+            if (paraOuvert) {
+                parachutisteVue.setImage(parachuteOuvert);
+            } else {
+                parachutisteVue.setImage(parachuteFerme);
+            }
         }
     }
 
