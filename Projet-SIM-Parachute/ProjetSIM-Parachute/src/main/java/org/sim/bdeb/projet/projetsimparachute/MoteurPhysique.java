@@ -16,15 +16,14 @@ public class MoteurPhysique {
     private double altitude;
 
 
-
     public MoteurPhysique() {
         gravite = new Gravite();
         resistanceAir = new ResistanceAir();
     }
 
-    public void update(Parachutiste parachutiste, double temps,double altitudeActuelle) {
+    public void update(Parachutiste parachutiste, double temps, double altitudeActuelle) {
 
-            this.tempsTotal += temps;
+        this.tempsTotal += temps;
 
         Point2D forceTotale = new Point2D(0, 0);
         forceTotale = forceTotale.add(gravite.calculForceGravite(parachutiste));
@@ -55,11 +54,14 @@ public class MoteurPhysique {
         double masse = parachutiste.getMasse();
         double cd = parachutiste.getCoefficientTrainee();
 
+
         if (!parachutiste.estOuvert()) {
             surface = resistanceAir.getSurface();
         }
+        // SÉCURITÉ : Si la surface est 0 ou négative, on met une valeur par défaut
+        double s = (surface <= 0) ? 0.6 : surface;
         // Source: https://tpeps7.wordpress.com/2015/01/12/la-resistance-de-lair/
-        return Math.sqrt((2 * masse * GRAVITE) / (rho * surface * cd));
+        return Math.sqrt((2 * masse * GRAVITE) / (rho * s * cd));
     }
 
     public double calculerAltitudeMin(Parachutiste parachutiste) {
@@ -72,11 +74,12 @@ public class MoteurPhysique {
 
     }
 
+
     public double getTempsTotal() {
         return tempsTotal;
     }
 
-    public void setTempsTotal(double tempsTotal){
+    public void setTempsTotal(double tempsTotal) {
         this.tempsTotal = tempsTotal;
     }
 

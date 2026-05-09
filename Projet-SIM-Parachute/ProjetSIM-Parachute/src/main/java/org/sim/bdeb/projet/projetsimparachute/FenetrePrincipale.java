@@ -17,13 +17,16 @@ import java.io.IOException;
 
 public class FenetrePrincipale extends BorderPane {
 
+    // --- COMPOSANTS DE L'INTERFACE ---
     private InterfaceParametres parametres;
     private VueAnimation animation;
     private VueStatistique stat;
 
+    // --- CONTRÔLEURS ET STAGE ---
     private SimulationController simulationController;
     private Stage stage;
 
+    // --- ÉLÉMENTS FXML ---
     @FXML
     private Button demarrer;
 
@@ -36,8 +39,10 @@ public class FenetrePrincipale extends BorderPane {
     @FXML
     private Button boutonFoisDix;
 
+    // --- STYLES ET ÉTAT ---
     private String styleOriginalVert; // Variable pour stocker ton design SceneBuilder
 
+    // --- CONSTRUCTEUR ---
     public FenetrePrincipale(Stage stage, SimulationController simulation) {
         this.parametres = new InterfaceParametres();
         this.animation = new VueAnimation();
@@ -53,6 +58,7 @@ public class FenetrePrincipale extends BorderPane {
         this.stage.setScene(scene);
     }
 
+    // --- MÉTHODE DE MISE À JOUR (BOUCLE DE RENDU) ---
     public void update() {
         if (simulationController == null) return;
 
@@ -72,9 +78,11 @@ public class FenetrePrincipale extends BorderPane {
         parametres.updateTempsOptimal(tempsOpt);
 
         // Mettre à jour l'animation
-        animation.update(vitesse, altitude, hauteurInitiale,facteur);
+        animation.update(vitesse, altitude, hauteurInitiale, facteur);
         animation.dessinerParachutiste(paraOuvert);
     }
+
+    // --- GESTION DU CYCLE DE VIE ---
 
     // Appelé par SimulationController quand le parachutiste touche le sol
     public void onAterissage() {
@@ -84,8 +92,22 @@ public class FenetrePrincipale extends BorderPane {
         }
     }
 
-    private void configurerTitre() {
+    private void creerFenetre() {
+        //EVENTS pour donner les paramètres au Controller
+        initialiserTransfertParametres();
 
+        this.setLeft(parametres);
+        this.setCenter(animation);
+        this.setRight(stat);
+
+        configurerTitre();
+        configurerBarreDeControle();
+        configurerBoutonReinitialiser();
+    }
+
+    // --- CONFIGURATION DES SECTIONS (FXML) ---
+
+    private void configurerTitre() {
         try {
             // 1. Charger le fichier FXML
             FXMLLoader loader = new FXMLLoader(getClass().getResource("Titre.fxml"));
@@ -102,7 +124,6 @@ public class FenetrePrincipale extends BorderPane {
         } catch (IOException e) {
             // En cas d'erreur (fichier mal nommé ou mal placé)
             System.out.println("Impossible de charger le fichier FXML du titre : " + e.getMessage());
-
         }
     }
 
@@ -121,7 +142,9 @@ public class FenetrePrincipale extends BorderPane {
             FXMLLoader loaderAccelerer = new FXMLLoader(getClass().getResource("Accelerer.fxml"));
             loaderAccelerer.setController(this);
             Parent boutonsAccelerer = loaderAccelerer.load();
-            configurerBoutonsVitesse();
+
+            // Configuration des actions
+            configurerActionsBoutonsVitesse();
 
             // 4. L'ordre d'ajout ici détermine l'ordre à l'écran
             barreHorizontale.getChildren().addAll(interfaceDemarrer, boutonsAccelerer);
@@ -129,12 +152,10 @@ public class FenetrePrincipale extends BorderPane {
             // 5. Fixer le tout au bas du BorderPane
             this.setBottom(barreHorizontale);
 
-
-
             // Initialisation de la logique du bouton
             if (demarrer != null) {
                 styleOriginalVert = demarrer.getStyle();
-                verifierBoutonDemarrer();
+                configurerActionBoutonDemarrer();
             }
 
         } catch (IOException e) {
@@ -142,12 +163,13 @@ public class FenetrePrincipale extends BorderPane {
         }
     }
 
-    private void configurerBoutonsVitesse() {
+    // --- CONFIGURATION DES ACTIONS  ---
+
+    private void configurerActionsBoutonsVitesse() {
         // Action pour le bouton x1
         boutonFoisUn.setOnAction(event -> {
             if (simulationController != null) {
                 simulationController.setMultiplicateurVitesse(1.0);
-
             }
         });
 
@@ -155,14 +177,11 @@ public class FenetrePrincipale extends BorderPane {
         boutonFoisDix.setOnAction(event -> {
             if (simulationController != null) {
                 simulationController.setMultiplicateurVitesse(10.0);
-
             }
         });
     }
 
-
-    private void verifierBoutonDemarrer() {
-
+    private void configurerActionBoutonDemarrer() {
         //Configuration de la touche démarrer
         demarrer.setOnAction(event -> {
             if (simulationController == null) return;
@@ -172,10 +191,9 @@ public class FenetrePrincipale extends BorderPane {
                 simulationController.arreterSimulation();
                 demarrer.setStyle(styleOriginalVert);
                 demarrer.setText("Démarrer");
-            } else {
 
-                if (!parametres.getTextMasse().getText().isEmpty() && !parametres.getTextSurface().getText().isEmpty()
-                        && !parametres.getTextAltitudeInitiale().getText().isEmpty()) {
+            } else {
+                if (siChampsNonVides()) {
 
                     // On récupère les valeurs finales (qui ont été corrigées par les validateurs)
                     double masseFinale = Double.parseDouble(parametres.getTextMasse().getText());
@@ -189,12 +207,17 @@ public class FenetrePrincipale extends BorderPane {
 
                     simulationController.setSimulationEnCours(true);
                     simulationController.lancerSimulation();
-                    boutonDemarrerEnRouge();
+                    appliquerStyleBoutonArreter();
                 }
-
             }
         });
     }
+
+    private boolean siChampsNonVides() {
+        return !parametres.getTextMasse().getText().isEmpty() && !parametres.getTextSurface().getText().isEmpty()
+                && !parametres.getTextAltitudeInitiale().getText().isEmpty();
+    }
+
 
     private void configurerBoutonReinitialiser() {
         reintialiser.setOnAction(event -> {
@@ -210,11 +233,10 @@ public class FenetrePrincipale extends BorderPane {
             this.stat = new VueStatistique();
 
             creerFenetre();
-
         });
     }
 
-    private void boutonDemarrerEnRouge() {
+    private void appliquerStyleBoutonArreter() {
         //Fond en dégradé léger rouge vif → button arreter
         demarrer.setStyle(
                 "-fx-background-color: linear-gradient(to bottom, #FF3B30, #FF6B6B);" +
@@ -223,29 +245,15 @@ public class FenetrePrincipale extends BorderPane {
         demarrer.setText("Arrêter");
     }
 
+    // --- INTERFACE PARAMETRES (TRANSFERT DE DONNÉES) ---
 
-    private void creerFenetre() {
+    // Savoir quand les valeurs des parametres sont modifiées et prévenir SimulationController de modifier la physique
 
-        //EVENTS pour donner les paramètres au Controller
+    private void initialiserTransfertParametres() {
         transfererValeurMasse();
         transfererValeurSurface();
         transfererValeurAltitude();
-
-        this.setLeft(parametres);
-        this.setCenter(animation);
-        this.setRight(stat);
-
-
-        configurerTitre();
-        configurerBarreDeControle();
-        configurerBoutonReinitialiser();
-
     }
-
-
-    // ------------------INTERFACE PARAMETRES-----------------------
-
-    //    Savoir quand les valeurs des parametres sont modifiées et prévenir SimulationController de modifier la physique
 
     public void transfererValeurMasse() {
         //Interface fonctionnelle
@@ -262,7 +270,6 @@ public class FenetrePrincipale extends BorderPane {
     }
 
     public void transfererValeurAltitude() {
-        // BUG FIXÉ: était setSurfaceUtilisateur, doit être setHauteurInitialeUtilisateur
         transfererValeur(parametres.getTextAltitudeInitiale(), valeur -> {
             if (simulationController != null) simulationController.setHauteurInitialeUtilisateur(valeur);
         });
@@ -274,21 +281,16 @@ public class FenetrePrincipale extends BorderPane {
             if (!texte.isEmpty()) {
                 try {
                     double valeur = Double.parseDouble(texte);
-                    //mettre la masse en double
-                    //Abishanth:  il arrive quoi si simulation controller est null? on va crash je crois?
-                    // correction pour debogage:
-                    // if (simulationController != null) { }
+
                     methode.accept(valeur);
                 } catch (NumberFormatException ex) {
-                    // Gestion d'erreur si ce n'est pas un chiffre
 
-                    // Abishanth: faudra mettre du code, comme une sorte de message?
-                    // System.out.println("Masse invalide : " + texteEntre);                }
                 }
             }
         });
     }
 
+    // --- GETTERS & SETTERS ---
 
     public VueAnimation getVueAnimation() {
         return animation;
@@ -297,8 +299,6 @@ public class FenetrePrincipale extends BorderPane {
     public void setSimulationController(SimulationController simulationController) {
         this.simulationController = simulationController;
     }
-
-
 
     public InterfaceParametres getParametres() {
         return parametres;

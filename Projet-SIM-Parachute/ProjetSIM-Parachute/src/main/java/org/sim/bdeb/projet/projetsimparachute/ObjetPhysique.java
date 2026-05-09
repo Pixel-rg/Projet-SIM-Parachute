@@ -2,10 +2,6 @@ package org.sim.bdeb.projet.projetsimparachute;
 
 import javafx.geometry.Point2D;
 
-
-
-//AJOUTER ATTRIBUTS image afin de ne pas faire de copier collé entre les classes
-//parachutiste, nuage et avion
 public abstract class ObjetPhysique {
     //Jalal
     protected Point2D position;

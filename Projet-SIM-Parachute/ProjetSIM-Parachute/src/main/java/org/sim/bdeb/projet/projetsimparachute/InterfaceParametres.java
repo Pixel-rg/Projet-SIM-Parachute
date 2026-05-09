@@ -92,41 +92,50 @@ public class InterfaceParametres extends VBox {
     }
 
     private void seulementIntervallePermis(TextField champ, int min, int max) {
-
-        //TextFormatter: intercepte chaque touche pressée avant qu'elle ne soit affichée.
-        //Source:
+        // Le TextFormatter intercepte chaque changement (touche pressée, coller, effacer)
         champ.setTextFormatter(new TextFormatter<>(change -> {
-            // On récupère ce que serait le texte final si on acceptait le changement
             String nouveauTexte = change.getControlNewText();
 
-            // autoriser le champ vide pour que l'utilisateur puisse effacer son texte
+            //  Autoriser le champ vide pour que l'utilisateur puisse effacer et retaper
             if (nouveauTexte.isEmpty()) {
                 return change;
             }
 
-            // Mettre String en int
-            int valeur = Integer.parseInt(nouveauTexte);
-
-            // 3. valeur doit être plus petit que le max
-            if (valeur <= max) {
-                return change;
+            //  Vérifier si c'est un nombre valide avant de parser
+            // Le regex "-?\\d*" permet les chiffres
+            if (!nouveauTexte.matches("-?\\d*")) {
+                return null; // Refuse le caractère si ce n'est pas un chiffre
             }
 
-            return null; //Si retourne change, l'action de l'utilisateur est accepté , null = c'est refusé
+            try {
+                //  Conversion
+                int valeur = Integer.parseInt(nouveauTexte);
+
+                //  Vérification de l'intervalle
+                // On accepte le changement seulement si on ne dépasse pas le max
+
+                if (valeur <= max) {
+                    return change;
+                }
+            } catch (NumberFormatException e) {
+                // En cas de nombre trop grand pour un int
+                return null;
+            }
+
+            return null; // Refuse le changement si aucune condition n'est respectée
         }));
 
-        // quand l'utilisateur finit d'interagir avec le champ.
-        champ.focusedProperty().addListener((observation, etaitFocus, estFocus) -> {
-            // Si estFocus est faux, cela veut dire que l'utilisateur a cliqué ailleurs, donc il faut verifier champ
-            if (!estFocus) {
+        // 5. Validation finale  (pour le MIN)
+        champ.focusedProperty().addListener((obs, ancien, nouveau) -> {
+            if (!nouveau) { // Si l'utilisateur clique ailleurs
                 String texte = champ.getText();
-
-                int valeur = Integer.parseInt(texte);
-
-                if (texte.isEmpty()||valeur <min) {
-                    // Si le champ est vide à la sortie, on force la valeur minimale ou si la valeur finale est inférieure au minimum autorisé
+                if (texte.isEmpty()) {
                     champ.setText(String.valueOf(min));
-
+                } else {
+                    int valeur = Integer.parseInt(texte);
+                    if (valeur < min) {
+                        champ.setText(String.valueOf(min));
+                    }
                 }
             }
         });

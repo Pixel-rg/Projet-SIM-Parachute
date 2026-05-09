@@ -2,17 +2,15 @@ package org.sim.bdeb.projet.projetsimparachute;
 
 import javafx.geometry.Point2D;
 
-public class Parachutiste extends ObjetPhysique{
+public class Parachutiste extends ObjetPhysique {
     //Zakarya
     private double masseTotale; //Masse de personnage + masse parachute, defini par lutilisateur
     private double surface;
     private double coefficientTrainee;
     private boolean parachuteOuvert;
 
-    // il faudra avoir un coeff trainee fixe pour garder la situation plus realiste
-    //Mikail: Oui, coefficient de trainée augmente dans le parachute est ouvert
-    public Parachutiste(Point2D position, Point2D vitesse, Point2D acceleration, double surface, double masse){
-        super(position,vitesse,acceleration);
+    public Parachutiste(Point2D position, Point2D vitesse, Point2D acceleration, double surface, double masse) {
+        super(position, vitesse, acceleration);
         this.surface = surface;
         this.coefficientTrainee = 1;
         this.masseTotale = masse;
@@ -46,6 +44,7 @@ public class Parachutiste extends ObjetPhysique{
     public boolean estOuvert() {
         return parachuteOuvert;
     }
+
     public boolean ouvrirParachute() {
         return parachuteOuvert = true;
     }

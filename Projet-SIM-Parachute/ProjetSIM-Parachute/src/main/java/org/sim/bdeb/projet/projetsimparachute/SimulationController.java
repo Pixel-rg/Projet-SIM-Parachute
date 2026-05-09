@@ -3,28 +3,31 @@ package org.sim.bdeb.projet.projetsimparachute;
 import javafx.animation.AnimationTimer;
 import javafx.geometry.Point2D;
 import javafx.scene.layout.VBox;
-
 //Classe passerelle entre la vue(FenetrePrincipale) et la logique(Simulateur)
 //Fourni les informations de la fenetrePrincipale jusqu'à la simulation
 
 public class SimulationController {
 
+    // --- ATTRIBUTS DE LOGIQUE ET TEMPS ---
     private AnimationTimer timer;
     private double multiplicateurVitesse = 1.0; // Par défaut à 1x
     private Simulateur simulateur;
     private FenetrePrincipale fenetre;
 
+    // --- PARAMÈTRES UTILISATEUR ---
     //Paramètres modifiés par l'utilisateur qu'on doit communiquer à la simulation
     private double masseUtilisateur;
     private double surfaceUtilisateur;
     private double hauteurInitialeUtilisateur;
 
+    // --- ÉTAT DE LA SIMULATION ---
     //Boutons début et fin de la simulation
     private boolean simulationEnCours;
     private boolean aReintialise = true;
     private boolean resetChrono;
     private int nbCliquerDemarrer;
 
+    // --- CONSTRUCTEUR ---
     public SimulationController(FenetrePrincipale fenetre) {
         this.fenetre = fenetre;
 
@@ -34,42 +37,53 @@ public class SimulationController {
             @Override
             public void handle(long temps) {
 
-                // On synchronise dernierTemps avec le temps actuel de JavaFX.
+                // 1. Synchronisation du chrono au démarrage ou après un reset
                 if (resetChrono) {
                     dernierTemps = temps;
                     resetChrono = false;
                     return;
                 }
 
-                // Calcul du delta temps
-                double deltaTemps = (temps - dernierTemps) * 1e-9;
+                // 2. Calcul du deltaTemps réel (le temps écoulé entre deux rafraîchissements d'écran)
+                // 1e-9 convertit les nanosecondes en secondes (environ 0.016s à 60 FPS)
+                double deltaTempsReel = (temps - dernierTemps) * 1e-9;
                 dernierTemps = temps;
 
-                double deltaTempsSimule = deltaTemps * multiplicateurVitesse;
+                // --- SOLUTION AU PROBLÈME DU Infini :
+                //Le x10 rendait l'accélération folle et explosait les valeurs
 
-                // Mise à jour de la physique
+                // On définit combien de fois on veut répéter la simulation pendant cette frame.
+                // Si multiplicateurVitesse = 10, on va faire 10 petites mises à jour physiques.
+                int nombreDePas = (int) multiplicateurVitesse;
+
                 if (simulateur != null) {
-                    // ABISHANTH: J AI UN METHODE POUR PRENDRE ALTITUDE LIVE
-                    double altitudePara = getAltitude();
-                    simulateur.update(deltaTempsSimule,altitudePara);
-                    fenetre.update();
+                    for (int i = 0; i < nombreDePas; i++) {
+                        // On fait avancer la physique par petits bonds stables
+                        // On passe 'deltaTempsReel' et non le temps multiplié !
+                        simulateur.update(deltaTempsReel, getAltitude());
 
-                    if (simulateur.getParachutiste().getPosition().getY() >= hauteurInitialeUtilisateur) {
-                        arreterSimulation();
-                        fenetre.onAterissage();
+                        // Vérification de l'atterrissage à chaque petit pas
+                        if (simulateur.getParachutiste().getPosition().getY() >= hauteurInitialeUtilisateur) {
+                            arreterSimulation();
+                            fenetre.onAterissage();
+                            break; // On sort de la boucle for si on touche le sol
+                        }
                     }
+
+                    // 3. Mise à jour visuelle (une seule fois après les calculs physiques)
+                    // Cela permet de garder les stats fluides sans saccades
+                    fenetre.update();
                 }
             }
         };
     }
 
+    // --- GESTION DU CYCLE DE VIE (START, STOP, RESET) ---
 
     //Appeler quand on clique sur un bouton démarrer
     public void lancerSimulation() {
         nbCliquerDemarrer++;
-
         this.simulationEnCours = true;
-
 
         // FORCE la réinitialisation du chrono pour la prochaine frame du timer
         this.resetChrono = true;
@@ -80,12 +94,12 @@ public class SimulationController {
         fenetre.getVueAnimation().setVisibleSimulation(true); //Afficher le parachutiste
 
         if (aReintialise) {
+            if (masseUtilisateur <= 0) masseUtilisateur = 70; // Valeur par défaut pour éviter le crash
+
             simulateur = new Simulateur(masseUtilisateur, hauteurInitialeUtilisateur, surfaceUtilisateur);
         }
 
-
         aReintialise = false;
-
         timer.start();
     }
 
@@ -95,29 +109,23 @@ public class SimulationController {
     }
 
     public void reinitialiserPhysique() {
-        // 1. Reset des paramètres de configuration (Force l'utilisateur à retaper)
+        this.timer.stop();
+        this.simulationEnCours = false;
+        this.aReintialise = true;
+        this.resetChrono = true;
+        this.nbCliquerDemarrer = 0;
+
+        // On détruit l'ancien simulateur pour libérer la mémoire
+        this.simulateur = null;
+
+        // On remet les paramètres par défaut
         this.masseUtilisateur = 0;
         this.surfaceUtilisateur = 0;
-        this.hauteurInitialeUtilisateur = 0; // Abishanth: je ne sais pas comment bloquer lol. En effet, lorsque je
-        // reinitilise, le parachute ouvre directement , car hauteur initale est "0" si qui fait ma condition dans moteur
-        //physique vrai, c une therie je ne suis pas sur si c vrai
+        this.hauteurInitialeUtilisateur = 1000;
 
-        // 2. Reset du temps et du moteur
-        simulateur.setTempsTotal(0);
-        this.simulationEnCours = false;
-        this.resetChrono = true;
-
-        // 3. Reset du Parachutiste (L'objet physique)
-        Parachutiste parachutiste = simulateur.getParachutiste();
-        parachutiste.setVitesse(new Point2D(0, 0));
-        parachutiste.setPosition(new Point2D(0, 0)); // Il revient au sol (0,0)
-        parachutiste.setParachuteOuvert(false);
-
-        // Attention : Ne mets pas la surface à 0 ici si elle est utilisée
-        // immédiatement dans un calcul de division dans le moteur.
-        parachutiste.setSurface(0);
-        parachutiste.setCoefficientTrainee(0);
     }
+
+    // --- SETTERS ---
 
     // changer la vitesse de simulation
     public void setMultiplicateurVitesse(double facteur) {
@@ -140,11 +148,12 @@ public class SimulationController {
         this.simulationEnCours = simulationEnCours;
     }
 
+    // --- GETTERS (POUR LA VUE ET LES STATISTIQUES) ---
+
     public boolean isSimulationEnCours() {
         return simulationEnCours;
     }
 
-    // Getters pour la vue et les stats
     public double getVitesseParachutiste() {
         if (simulateur == null) return 0;
         return simulateur.getParachutiste().getVitesse().getY();
@@ -187,7 +196,4 @@ public class SimulationController {
         return multiplicateurVitesse;
     }
 
-    public Point2D getAccelerationParachutiste(){
-        return simulateur.getParachutiste().getAcceleration();
-    }
 }

@@ -3,33 +3,20 @@ import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
-public class Nuage extends ObjetPhysique {
-    Image nuage = new Image("Nuage.png");
-    ImageView nuageView = new ImageView(nuage);
-
+public class Nuage extends ObjetEnvironnant {
     private static final double LARGEUR_ECRAN = 1080;
-    private static final double LARGEUR_NUAGE = 300;
 
-    public Nuage(Point2D position, Point2D vitesse,Point2D acceleration) {
-        super(position, vitesse,acceleration);
-        nuageView.setFitWidth(LARGEUR_NUAGE);
-        nuageView.setFitHeight(150);
-        nuageView.setX(position.getX());
-        nuageView.setY(position.getY());
+    public Nuage(Point2D position, Point2D vitesse, Point2D acceleration) {
+        super(position, vitesse, acceleration, "Nuage.png", 300, 150);
     }
 
+    @Override
     public void update(double deltaTemps) {
         super.update(deltaTemps);
 
-        if (position.getX() + LARGEUR_NUAGE < 0) {
-            position = new Point2D(LARGEUR_ECRAN, position.getY());
+        // Faire spawn dans l'écran s'il dépasse
+        if (position.getX() + largeur < 0) {
+            this.position = new Point2D(LARGEUR_ECRAN, position.getY());
         }
-
-        nuageView.setX(position.getX());
-        nuageView.setY(position.getY());
-    }
-
-    public ImageView getNuageView() {
-        return nuageView;
     }
 }
