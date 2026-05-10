@@ -112,6 +112,7 @@ public class SimulationController {
         this.timer.stop();
         this.simulationEnCours = false;
         this.aReintialise = true;
+        setMultiplicateurVitesse(1.0); // On le remet au défault
         this.resetChrono = true;
         this.nbCliquerDemarrer = 0;
 

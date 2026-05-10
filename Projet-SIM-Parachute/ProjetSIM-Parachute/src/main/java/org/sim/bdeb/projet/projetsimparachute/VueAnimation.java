@@ -6,7 +6,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 public class VueAnimation extends Pane {
 
@@ -59,7 +58,7 @@ public class VueAnimation extends Pane {
     public VueAnimation() {
         initialiserDecors();
         initialiserParachutiste();
-        spawnerNuages();
+        creerNuages();
 
         // L'avion sera devant les nuages car ajouté après
         this.getChildren().add(avion.getImageView());
@@ -80,14 +79,14 @@ public class VueAnimation extends Pane {
     }
 
     private void initialiserParachutiste() {
-        parachutisteVue.setVisible(false); // On le voit pas au début (est dans l'avion)
+        parachutisteVue.setVisible(false); // On ne le voit pas au début (est dans l'avion)
         parachutisteVue.setFitWidth(PARA_WIDTH);
         parachutisteVue.setFitHeight(PARA_HEIGHT);
         parachutisteVue.setX(PARA_X);
         parachutisteVue.setY(Y_HAUT);
     }
-
-    private void spawnerNuages() {
+    //Création des nuages
+    private void creerNuages() {
         for (int i = 0; i < 5; i++) {
             double randomVitesse = ThreadLocalRandom.current().nextDouble(0.5, 2.5);
             double randomX = ThreadLocalRandom.current().nextDouble(211, 500);
@@ -145,6 +144,7 @@ public class VueAnimation extends Pane {
         }
     }
 
+    //Dessin du parachutiste dépendant da la situation qu'il se retrouve
     public void dessinerParachutiste(boolean paraOuvert) {
         parachutisteVue.setX(PARA_X);
 

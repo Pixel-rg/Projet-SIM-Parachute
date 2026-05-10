@@ -13,7 +13,6 @@ public class MoteurPhysique {
     private double tempsOptimal;
     private double tempsTotal = 0;
     private double surface = 0.6;
-    private double altitude;
 
 
     public MoteurPhysique() {
@@ -34,12 +33,7 @@ public class MoteurPhysique {
         parachutiste.setAcceleration(acceleration);
         parachutiste.update(temps);
 
-        // Ouvrir le parachute automatiquement si vitesse dépasse seuil sécuritaire
-        // Dès que la vitesse du parachutiste atteint la vitesse sécuritaire ou celle de la
-        // vitesse terminale du parachutiste, on applique
-        // à cet instant précis la variable du temps optimal.
-
-        //ABISHANTH: IDK WHERE THE BUG IS PLS HELP CLASS I CHANGED WAS METHODS : MOTEURPHYS, SIMULATEUR, SIMCONTROLLER,UPDATE PHYSIQUE
+        // On ouvre le parachute lorsqu'on atteint l'altitude minimale sécuritaire
 
         if (!parachutiste.estOuvert() && altitudeActuelle <= calculerAltitudeMin(parachutiste)) {
             System.out.println(altitudeActuelle);
@@ -48,7 +42,7 @@ public class MoteurPhysique {
         }
 
     }
-
+    // Calcule de la vitesse maximale qu'on peut atteindre (approximation)
     public double calculerVitesseTerminale(Parachutiste parachutiste) {
         double rho = 1.225;
         double masse = parachutiste.getMasse();
@@ -64,6 +58,7 @@ public class MoteurPhysique {
         return Math.sqrt((2 * masse * GRAVITE) / (rho * s * cd));
     }
 
+    //Calcule de l'altitude minimale
     public double calculerAltitudeMin(Parachutiste parachutiste) {
         double vTerminale = calculerVitesseTerminale(parachutiste);
         double altitudeSecuritaire = 762; //https://skydivecalifornia.com/blog/when-skydivers-pull-parachutes/

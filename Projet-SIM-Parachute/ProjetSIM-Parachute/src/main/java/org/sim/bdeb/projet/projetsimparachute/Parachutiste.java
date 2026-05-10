@@ -3,8 +3,7 @@ package org.sim.bdeb.projet.projetsimparachute;
 import javafx.geometry.Point2D;
 
 public class Parachutiste extends ObjetPhysique {
-    //Zakarya
-    private double masseTotale; //Masse de personnage + masse parachute, defini par lutilisateur
+    private double masseTotale; //Masse de personnage + masse parachute, defini par l'utilisateur
     private double surface;
     private double coefficientTrainee;
     private boolean parachuteOuvert;
@@ -41,6 +40,7 @@ public class Parachutiste extends ObjetPhysique {
         return coefficientTrainee;
     }
 
+    // Vérifie si le parachute est ouvert ou fermé
     public boolean estOuvert() {
         return parachuteOuvert;
     }
@@ -49,7 +49,4 @@ public class Parachutiste extends ObjetPhysique {
         return parachuteOuvert = true;
     }
 
-    public void setParachuteOuvert(boolean parachuteOuvert) {
-        this.parachuteOuvert = parachuteOuvert;
-    }
 }

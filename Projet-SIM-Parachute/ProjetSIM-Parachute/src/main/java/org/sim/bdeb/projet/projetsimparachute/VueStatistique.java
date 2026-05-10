@@ -19,6 +19,7 @@ public class VueStatistique extends VBox {
     }
 
     // Appelé à chaque frame par FenetrePrincipale.update()
+    // Mettre à jour les valeurs en temps réel
     public void update(double vitesse, double altitudeVal, double tempsVal, double forceVal) {
         velocite.setText(String.format("%.1f ", vitesse));
         altitude.setText(String.format("%.0f", altitudeVal));

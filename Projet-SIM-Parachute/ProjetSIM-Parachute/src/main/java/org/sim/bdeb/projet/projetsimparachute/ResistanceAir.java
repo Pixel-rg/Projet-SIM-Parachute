@@ -4,8 +4,8 @@ import javafx.geometry.Point2D;
 import javafx.scene.effect.Light;
 
 public class ResistanceAir {
-    private double densiteAir = 1.225; //Fixe selon la hauteur du parachutiste
-    private static final double SURFACECORPS = 0.6; // varie de 0.5 à 0.7
+    private double densiteAir = 1.225; //https://www.isobudgets.com/fr/moist-air-density/
+    private static final double SURFACECORPS = 0.7; // https://www.sciencefacts.net/terminal-velocity-of-a-human.html
     private double surface;
 
     public Point2D calculForceResistanceAir( Parachutiste parachutiste){
