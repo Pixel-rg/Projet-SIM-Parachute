@@ -60,7 +60,7 @@ public class VueAnimation extends Pane {
     private final ImageView parachutisteVue = new ImageView(parachuteFerme);
 
     // --- DICTIONNAIRE DE LIAISON MVC ---
-    // Associer un objet (modèle) à son image (View)
+    // Associer un objet (modèle) à son image (View)a
     private final Map<ObjetEnvironnant, ImageView> vuesObjets = new HashMap<>();
 
     private Avion avion;
