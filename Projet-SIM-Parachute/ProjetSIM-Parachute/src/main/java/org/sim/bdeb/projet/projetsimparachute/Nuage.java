@@ -7,14 +7,18 @@ public class Nuage extends ObjetEnvironnant {
     private static final double LARGEUR_ECRAN = 1080;
 
     public Nuage(Point2D position, Point2D vitesse, Point2D acceleration) {
-        super(position, vitesse, acceleration, "Nuage.png", 300, 150);
+        // Définit l'image "Nuage.png" et une taille fixe de 300x150
+        super(position, vitesse, acceleration, 300, 150);
     }
 
     @Override
     public void update(double deltaTemps) {
+        // Applique le mouvement physique (position += vitesse * temps)
         super.update(deltaTemps);
 
-        // Faire spawn dans l'écran s'il dépasse
+        // Logique de "Loop" horizontal :
+        // Si le nuage sort complètement par la gauche (x + largeur < 0),
+        // on le fait réapparaître à l'extrême droite de l'écran.
         if (position.getX() + largeur < 0) {
             this.position = new Point2D(LARGEUR_ECRAN, position.getY());
         }
