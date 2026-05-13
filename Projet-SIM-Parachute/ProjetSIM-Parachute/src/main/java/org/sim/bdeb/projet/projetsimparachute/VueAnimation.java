@@ -129,18 +129,35 @@ public class VueAnimation extends Pane {
         // Translation de la progression vers une position Y à l'écran
         double yEcran = Y_HAUT + progress * (Y_BAS - Y_HAUT);
 
+        // Met à jour sa position verticale à l'écran.
         if (!estAuSol) {
             parachutisteVue.setY(yEcran);
         }
 
         // Détection de l'atterrissage
         if (altitude <= 0) {
+            // On fixe la position (y) du parachutiste sur le sol.
+            // On examine l'attérissage lorsque le parachutiste est proche de la surface de la terre (Altitude =0)
             parachutisteVue.setY(Y_SOL_FINAL);
             estAuSol = true;
         }
 
         // Animation de l'ascension du sol
+        // Quand l'altitude diminue, on fait une animation qui montre
+        // une nouvelle couche de l'atmosphère.
+        // C'est aussi pour donner un effet visuel d'approche
+
+        // Fait monter progressivement le sol à l'écran lorsque
+        // le parachutiste approche du sol.
+        // Plus l'altitude diminue, plus la position Y du sol diminue,
+        // ce qui donne l'impression que le sol monte vers le joueur.
+        // La hauteur de l'image du sol est soustraite pour bien aligner
+        // le sol à l'écran.
         if (altitude < SEUIL_APPARITION_SOL) {
+            //Pour faire l'animation de l'attérissage, on prend une position de base et on regarde la différence de
+            //distance et on met à jour la position du sol. On calcul (10-altitude) à quel point il est proche du sol.
+            // La constante *2 rend l'animation plus fluide et le -solVue corrige la position selon
+            // la hauteur de l'image du sol pour bien l'aligner.
             solVue.setY(525 - (10 - altitude) * 2 - solVue.getFitHeight());
         } else {
             solVue.setY(SCREEN_HEIGHT - solVue.getFitHeight());
@@ -192,8 +209,10 @@ public class VueAnimation extends Pane {
 
     //Change l'image du parachutiste selon son état physique.
     public void dessinerParachutiste(boolean paraOuvert) {
+        // Place le parachutiste toujours à la même position X
         parachutisteVue.setX(PARA_X);
 
+        // Change la taille du parachutiste lorsqu'il attérit pour ajuster l'image.
         if (estAuSol) {
             parachutisteVue.setFitHeight(PARA_SOL_HEIGHT);
             parachutisteVue.setFitWidth(PARA_SOL_WIDTH);
