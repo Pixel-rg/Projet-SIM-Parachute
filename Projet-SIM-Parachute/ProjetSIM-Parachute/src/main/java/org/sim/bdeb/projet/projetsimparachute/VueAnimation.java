@@ -142,22 +142,20 @@ public class VueAnimation extends Pane {
             estAuSol = true;
         }
 
-        // Animation de l'ascension du sol
-        // Quand l'altitude diminue, on fait une animation qui montre
-        // une nouvelle couche de l'atmosphère.
-        // C'est aussi pour donner un effet visuel d'approche
+        /**
+         * Animation de l'ascension du sol quand l'altitude diminue, on fait une animation qui montre
+         * une nouvelle couche de l'atmosphère. C'est aussi pour donner un effet visuel d'approche
+         * Fait monter progressivement le sol à l'écran lorsque le parachutiste approche du sol.
+         * Plus l'altitude diminue, plus la position Y du sol diminue, ce qui donne l'impression que
+         * le sol monte vers le joueur. La hauteur de l'image du sol est soustraite pour bien aligner le sol à l'écran.
+         */
 
-        // Fait monter progressivement le sol à l'écran lorsque
-        // le parachutiste approche du sol.
-        // Plus l'altitude diminue, plus la position Y du sol diminue,
-        // ce qui donne l'impression que le sol monte vers le joueur.
-        // La hauteur de l'image du sol est soustraite pour bien aligner
-        // le sol à l'écran.
         if (altitude < SEUIL_APPARITION_SOL) {
-            //Pour faire l'animation de l'attérissage, on prend une position de base et on regarde la différence de
-            //distance et on met à jour la position du sol. On calcul (10-altitude) à quel point il est proche du sol.
-            // La constante *2 rend l'animation plus fluide et le -solVue corrige la position selon
-            // la hauteur de l'image du sol pour bien l'aligner.
+            /**Pour faire l'animation de l'attérissage, on prend une position de base et on regarde la différence de
+             *distance et on met à jour la position du sol. On calcul (10-altitude) à quel point il est proche du sol.
+             *La constante *2 rend l'animation plus fluide et le -solVue corrige la position selon
+             *la hauteur de l'image du sol pour bien l'aligner.
+             */
             solVue.setY(525 - (10 - altitude) * 2 - solVue.getFitHeight());
         } else {
             solVue.setY(SCREEN_HEIGHT - solVue.getFitHeight());

@@ -76,10 +76,6 @@ public class MoteurPhysique {
         return tempsTotal;
     }
 
-    public void setTempsTotal(double tempsTotal) {
-        this.tempsTotal = tempsTotal;
-    }
-
     //La méthode suivante permet de retourner la valeur du temps optimal calculé précedemment.
     public double getTempsOptimal() {
         return tempsOptimal;

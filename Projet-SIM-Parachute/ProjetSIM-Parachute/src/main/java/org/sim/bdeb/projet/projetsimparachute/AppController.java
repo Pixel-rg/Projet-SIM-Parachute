@@ -1,6 +1,5 @@
 package org.sim.bdeb.projet.projetsimparachute;
 
-import javafx.application.Platform;
 import javafx.stage.Stage;
 
 //Application qui instancie la vue et le controller

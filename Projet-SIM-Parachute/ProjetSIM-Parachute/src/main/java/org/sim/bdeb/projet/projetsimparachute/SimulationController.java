@@ -23,7 +23,7 @@ public class SimulationController {
     private boolean simulationEnCours;
     private boolean aReintialise = true;
     private boolean resetChrono;
-    private int nbCliquerDemarrer;
+
 
     // --- CONSTRUCTEUR ---
     public SimulationController(FenetrePrincipale fenetre) {
@@ -74,7 +74,6 @@ public class SimulationController {
 
     //Appeler quand on clique sur un bouton démarrer
     public void lancerSimulation() {
-        nbCliquerDemarrer++;
         this.simulationEnCours = true;
 
         // Force la réinitialisation du chrono pour la prochaine frame du timer
@@ -107,7 +106,6 @@ public class SimulationController {
         this.simulationEnCours = false;
         this.aReintialise = true;
         this.resetChrono = true;
-        this.nbCliquerDemarrer = 0;
         setMultiplicateurVitesse(1.0);
 
         // On détruit l'ancien simulateur pour libérer la mémoire
