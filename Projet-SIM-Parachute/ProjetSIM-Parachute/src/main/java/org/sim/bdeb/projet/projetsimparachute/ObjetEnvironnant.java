@@ -2,6 +2,7 @@ package org.sim.bdeb.projet.projetsimparachute;
 
 import javafx.geometry.Point2D;
 
+//Classe qui décrit les objets du décor
 public abstract class ObjetEnvironnant extends ObjetPhysique {
     protected double largeur;
     protected double hauteur;

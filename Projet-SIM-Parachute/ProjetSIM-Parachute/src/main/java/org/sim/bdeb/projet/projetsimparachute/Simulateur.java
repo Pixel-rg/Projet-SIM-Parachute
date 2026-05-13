@@ -10,16 +10,16 @@ public class Simulateur {
         this.parachutiste = new Parachutiste(
                 new Point2D(0, 0),   // position Y = 0 (distance parcourue depuis départ)
                 new Point2D(0, 0),
-                new Point2D(0,0),
+                new Point2D(0, 0),
                 surfacePara,
                 masseChoisie
         );
         this.moteurPhysique = new MoteurPhysique();
 
     }
-    // ABISHANTH: J AI UN METHODE POUR PRENDRE ALTITUDE LIVE
+
     public void update(double deltaTemps, double altitude) {
-        moteurPhysique.update(parachutiste, deltaTemps,altitude);
+        moteurPhysique.update(parachutiste, deltaTemps, altitude);
     }
 
     public Parachutiste getParachutiste() {
@@ -31,13 +31,9 @@ public class Simulateur {
         return moteurPhysique.getTempsTotal();
     }
 
-    public void setTempsTotal(double tempsTotal){
-        moteurPhysique.setTempsTotal(tempsTotal);
-    }
 
-
-    // La méthode suivante permet à SimulationController d'accéder à la donnée calculé dans le MoteurPhysique
-    public double getTempsOptimal(){
+    // La méthode suivante permet à SimulationController d'accéder à la donnée calculée dans le MoteurPhysique
+    public double getTempsOptimal() {
         return moteurPhysique.getTempsOptimal();
     }
 }

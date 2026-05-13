@@ -3,7 +3,7 @@ package org.sim.bdeb.projet.projetsimparachute;
 import javafx.geometry.Point2D;
 
 public abstract class ObjetPhysique {
-    //Jalal
+
     protected Point2D position;
     protected Point2D vitesse;
     protected Point2D acceleration;
@@ -27,12 +27,9 @@ public abstract class ObjetPhysique {
     public void setVitesse(Point2D vitesse) {
         this.vitesse = vitesse;
     }
+
     public void setAcceleration(Point2D acceleration) {
         this.acceleration = acceleration;
-    }
-
-    public Point2D getAcceleration() {
-        return acceleration;
     }
 
     public Point2D getPosition() {

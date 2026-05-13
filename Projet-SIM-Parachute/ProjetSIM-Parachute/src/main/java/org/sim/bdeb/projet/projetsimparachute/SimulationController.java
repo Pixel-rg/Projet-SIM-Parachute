@@ -1,10 +1,8 @@
 package org.sim.bdeb.projet.projetsimparachute;
 
 import javafx.animation.AnimationTimer;
-import javafx.geometry.Point2D;
-import javafx.scene.layout.VBox;
 //Classe passerelle entre la vue(FenetrePrincipale) et la logique(Simulateur)
-//Fourni les informations de la fenetrePrincipale jusqu'à la simulation
+//Fourni les informations de la fenetrePrincipale jusqu'à la simulation et inversement
 
 public class SimulationController {
 
@@ -37,20 +35,16 @@ public class SimulationController {
             @Override
             public void handle(long temps) {
 
-                // 1. Synchronisation du chrono au démarrage ou après un reset
+                // Synchronisation du chrono au démarrage ou après un reset
                 if (resetChrono) {
                     dernierTemps = temps;
                     resetChrono = false;
                     return;
                 }
 
-                // 2. Calcul du deltaTemps réel (le temps écoulé entre deux rafraîchissements d'écran)
-                // 1e-9 convertit les nanosecondes en secondes (environ 0.016s à 60 FPS)
+                // Calcul du deltaTemps réel
                 double deltaTempsReel = (temps - dernierTemps) * 1e-9;
                 dernierTemps = temps;
-
-                // --- SOLUTION AU PROBLÈME DU Infini :
-                //Le x10 rendait l'accélération folle et explosait les valeurs
 
                 // On définit combien de fois on veut répéter la simulation pendant cette frame.
                 // Si multiplicateurVitesse = 10, on va faire 10 petites mises à jour physiques.
@@ -59,7 +53,6 @@ public class SimulationController {
                 if (simulateur != null) {
                     for (int i = 0; i < nombreDePas; i++) {
                         // On fait avancer la physique par petits bonds stables
-                        // On passe 'deltaTempsReel' et non le temps multiplié !
                         simulateur.update(deltaTempsReel, getAltitude());
 
                         // Vérification de l'atterrissage à chaque petit pas
@@ -70,8 +63,7 @@ public class SimulationController {
                         }
                     }
 
-                    // 3. Mise à jour visuelle (une seule fois après les calculs physiques)
-                    // Cela permet de garder les stats fluides sans saccades
+                    // Mise à jour visuelle
                     fenetre.update();
                 }
             }
@@ -85,7 +77,7 @@ public class SimulationController {
         nbCliquerDemarrer++;
         this.simulationEnCours = true;
 
-        // FORCE la réinitialisation du chrono pour la prochaine frame du timer
+        // Force la réinitialisation du chrono pour la prochaine frame du timer
         this.resetChrono = true;
 
         fenetre.getParametres().setPeutEcrire(false);
@@ -108,13 +100,15 @@ public class SimulationController {
         simulationEnCours = false;
     }
 
+    // Remettre les valeurs par défault
     public void reinitialiserPhysique() {
+
         this.timer.stop();
         this.simulationEnCours = false;
         this.aReintialise = true;
-        setMultiplicateurVitesse(1.0); // On le remet au défault
         this.resetChrono = true;
         this.nbCliquerDemarrer = 0;
+        setMultiplicateurVitesse(1.0);
 
         // On détruit l'ancien simulateur pour libérer la mémoire
         this.simulateur = null;

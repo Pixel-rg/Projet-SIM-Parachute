@@ -6,15 +6,20 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
 import javafx.scene.layout.VBox;
+
 import java.io.IOException;
 
 
 public class InterfaceParametres extends VBox {
 
-    @FXML private TextField textMasse;
-    @FXML private Label labelTempsOptimal;
-    @FXML private TextField textAltitudeInitiale;
-    @FXML private TextField textSurface;
+    @FXML
+    private TextField textMasse;
+    @FXML
+    private Label labelTempsOptimal;
+    @FXML
+    private TextField textAltitudeInitiale;
+    @FXML
+    private TextField textSurface;
     /*
     Paramètres avec lesquels l'utilisateur pourra jouer:
     - masse parachutiste  - surface(air)  - Hauteur initial
@@ -29,8 +34,10 @@ public class InterfaceParametres extends VBox {
     }
 
     public void updateTempsOptimal(double tempsOpt) {
-        if (labelTempsOptimal != null) {
-            labelTempsOptimal.setText(String.format("%.1f s", tempsOpt));
+        if (Double.isNaN(tempsOpt)) {
+            labelTempsOptimal.setText("---"); // Indique que la donnée est en attente si pas encore calculée
+        } else {
+            labelTempsOptimal.setText(String.format("%.2f s", tempsOpt));
         }
     }
 
@@ -48,27 +55,29 @@ public class InterfaceParametres extends VBox {
             this.getChildren().add(contenu);
 
 
+            //Imposer des restrictions de champs de textes permis
             seulementChiffres(textMasse);
             seulementChiffres(textAltitudeInitiale);
             seulementChiffres(textSurface);
 
-            seulementIntervallePermis(textMasse,40,100);
-            seulementIntervallePermis(textAltitudeInitiale,3000,6000);
-            seulementIntervallePermis(textSurface,5,40);
+            seulementIntervallePermis(textMasse, 40, 100);
+            seulementIntervallePermis(textAltitudeInitiale, 3000, 6000);
+            seulementIntervallePermis(textSurface, 5, 40);
 
         } catch (IOException e) {
             System.err.println("Erreur de chargement des paramètres : " + e.getMessage());
         }
     }
 
-    public void empecherEcrire(){
+    //Empecher d'écrire si la simulation est en cours
+    //peutEcrire est false si bouton démarrer a été cliqué. Cliquez sur réintialiser pour remettre true
+    public void empecherEcrire() {
 
-        if(!peutEcrire){    //peutEcrire est false si bouton démarrer a été cliqué. Cliquez sur réintialiser pour remettre true
+        if (!peutEcrire) {
             textMasse.setDisable(true);
             textAltitudeInitiale.setDisable(true);
             textSurface.setDisable(true);
-        }
-        else{
+        } else {
             textMasse.setDisable(false);
             textAltitudeInitiale.setDisable(false);
             textSurface.setDisable(false);
@@ -141,9 +150,6 @@ public class InterfaceParametres extends VBox {
         });
     }
 
-    public void designInterface(){
-        //Coder l'interface graphique de l'interfaceParametres. Ajoutez des méthodes annexes
-    }
 
     public TextField getTextMasse() {
         return textMasse;
@@ -157,15 +163,7 @@ public class InterfaceParametres extends VBox {
         return textSurface;
     }
 
-    public void setLabelTempsOptimal(Label labelTempsOptimal) {
-        this.labelTempsOptimal = labelTempsOptimal;
-    }
-
     public void setPeutEcrire(boolean peutEcrire) {
         this.peutEcrire = peutEcrire;
-    }
-
-    public boolean isPeutEcrire() {
-        return peutEcrire;
     }
 }

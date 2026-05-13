@@ -24,18 +24,6 @@ public class Parachutiste extends ObjetPhysique {
         return masseTotale;
     }
 
-    public void setMasseTotale(double masseTotale) {
-        this.masseTotale = masseTotale;
-    }
-
-    public void setSurface(double surface) {
-        this.surface = surface;
-    }
-
-    public void setCoefficientTrainee(double coefficientTrainee) {
-        this.coefficientTrainee = coefficientTrainee;
-    }
-
     public double getCoefficientTrainee() {
         return coefficientTrainee;
     }

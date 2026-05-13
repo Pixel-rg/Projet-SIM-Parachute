@@ -9,10 +9,14 @@ import java.io.IOException;
 
 public class VueStatistique extends VBox {
 
-    @FXML private Label temps;
-    @FXML private Label velocite;
-    @FXML private Label altitude;
-    @FXML private Label force;
+    @FXML
+    private Label temps;
+    @FXML
+    private Label velocite;
+    @FXML
+    private Label altitude;
+    @FXML
+    private Label force;
 
     public VueStatistique() {
         configurerInterface();
@@ -28,6 +32,7 @@ public class VueStatistique extends VBox {
 
     }
 
+    //Charger le fichier FXML
     private void configurerInterface() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("Statistique.fxml"));

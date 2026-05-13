@@ -42,6 +42,7 @@ public class FenetrePrincipale extends BorderPane {
     // --- STYLES ET ÉTAT ---
     private String styleOriginalVert; // Variable pour stocker ton design SceneBuilder
 
+
     // --- CONSTRUCTEUR ---
     public FenetrePrincipale(Stage stage, SimulationController simulation) {
         this.parametres = new InterfaceParametres();
@@ -52,16 +53,20 @@ public class FenetrePrincipale extends BorderPane {
 
         creerFenetre();
 
-        //Créer la scène à chaque fois que la fenetre est instancié, donc chaque fois quon démarre le appController
         Scene scene = new Scene(this, 1000, 720);
+
+        //Créer la scène à chaque fois que la fenetre est instancié, donc chaque fois qu'on démarre le AppController
+
         this.stage.setTitle("Simulateur de Parachute");
+        this.stage.setResizable(false);
         this.stage.setScene(scene);
     }
 
-    // --- MÉTHODE DE MISE À JOUR (BOUCLE DE RENDU) ---
+    // --- MÉTHODE DE MISE À JOUR ---
     public void update() {
         if (simulationController == null) return;
 
+        //Le controller fourni les données à la vue
         double vitesse = simulationController.getVitesseParachutiste();
         double altitude = simulationController.getAltitude();
         double temps = simulationController.getTempsTotal();
@@ -129,16 +134,16 @@ public class FenetrePrincipale extends BorderPane {
 
     private void configurerBarreDeControle() {
         try {
-            // 1. Créer le conteneur horizontal
-            HBox barreHorizontale = new HBox(); // Espace de 50px entre les deux blocs
-            barreHorizontale.setAlignment(Pos.CENTER); // Centre le tout horizontalement
+            // Créer le conteneur horizontal
+            HBox barreHorizontale = new HBox();
+            barreHorizontale.setAlignment(Pos.CENTER);
 
-            // 2. Charger le bloc Démarrer (le VBox) -> Sera à GAUCHE
+            // Charger le bloc Démarrer
             FXMLLoader loaderDemarrer = new FXMLLoader(getClass().getResource("Demarrer.fxml"));
             loaderDemarrer.setController(this);
             Parent interfaceDemarrer = loaderDemarrer.load();
 
-            // 3. Charger le bloc Accélérer (les boutons) -> Sera à DROITE
+            // Charger le bloc Accélérer
             FXMLLoader loaderAccelerer = new FXMLLoader(getClass().getResource("Accelerer.fxml"));
             loaderAccelerer.setController(this);
             Parent boutonsAccelerer = loaderAccelerer.load();
@@ -146,10 +151,9 @@ public class FenetrePrincipale extends BorderPane {
             // Configuration des actions
             configurerActionsBoutonsVitesse();
 
-            // 4. L'ordre d'ajout ici détermine l'ordre à l'écran
+            // L'ordre d'ajout ici détermine l'ordre à l'écran
             barreHorizontale.getChildren().addAll(interfaceDemarrer, boutonsAccelerer);
 
-            // 5. Fixer le tout au bas du BorderPane
             this.setBottom(barreHorizontale);
 
             // Initialisation de la logique du bouton
@@ -162,6 +166,7 @@ public class FenetrePrincipale extends BorderPane {
             System.out.println("Erreur de chargement des interfaces : " + e.getMessage());
         }
     }
+
 
     // --- CONFIGURATION DES ACTIONS  ---
 
@@ -182,6 +187,7 @@ public class FenetrePrincipale extends BorderPane {
     }
 
     private void configurerActionBoutonDemarrer() {
+
         //Configuration de la touche démarrer
         demarrer.setOnAction(event -> {
             if (simulationController == null) return;
@@ -213,6 +219,7 @@ public class FenetrePrincipale extends BorderPane {
         });
     }
 
+    //Vérifier que l'utilisateur a rempli les champs de textes avant de fourni les données au modèle
     private boolean siChampsNonVides() {
         return !parametres.getTextMasse().getText().isEmpty() && !parametres.getTextSurface().getText().isEmpty()
                 && !parametres.getTextAltitudeInitiale().getText().isEmpty();
@@ -245,6 +252,7 @@ public class FenetrePrincipale extends BorderPane {
         demarrer.setText("Arrêter");
     }
 
+
     // --- INTERFACE PARAMETRES (TRANSFERT DE DONNÉES) ---
 
     // Savoir quand les valeurs des parametres sont modifiées et prévenir SimulationController de modifier la physique
@@ -256,25 +264,27 @@ public class FenetrePrincipale extends BorderPane {
     }
 
     public void transfererValeurMasse() {
-        //Interface fonctionnelle
-        //champ de texte à surveiller (getTextMasse) --> prendre valeur --> donne-le à la méthode setMasseUtilisateur de mon contrôleur.
+
         transfererValeur(parametres.getTextMasse(), valeur -> {
             if (simulationController != null) simulationController.setMasseUtilisateur(valeur);
         });
     }
 
     public void transfererValeurSurface() {
+
         transfererValeur(parametres.getTextSurface(), valeur -> {
             if (simulationController != null) simulationController.setSurfaceUtilisateur(valeur);
         });
     }
 
     public void transfererValeurAltitude() {
+
         transfererValeur(parametres.getTextAltitudeInitiale(), valeur -> {
             if (simulationController != null) simulationController.setHauteurInitialeUtilisateur(valeur);
         });
     }
 
+    //Entrer une fonction en paramètre, afin d'optimiser le code
     private void transfererValeur(TextField champ, java.util.function.DoubleConsumer methode) {
         champ.setOnKeyReleased(e -> {
             String texte = champ.getText();

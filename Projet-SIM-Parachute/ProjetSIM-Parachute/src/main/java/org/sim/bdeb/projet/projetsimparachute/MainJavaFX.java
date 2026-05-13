@@ -5,6 +5,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+//Classe qui démarre l'application
 public class MainJavaFX extends Application {
 
     @Override

@@ -16,12 +16,6 @@ import java.util.concurrent.ThreadLocalRandom;
  */
 public class VueAnimation extends Pane {
 
-    // --- CONSTANTES DE POSITIONNEMENT ET DE DIMENSIONS ---
-    public static final double POSITIONX_PARAMETRE = 211;
-    public static final double POSITIONX_STAT = 808;
-    public static final double POSITIONY_TITRE = 65;
-    public static final double POSITIONY_DEMARRER = 535;
-
     // Délimitation de la zone de mouvement du parachutiste à l'écran
     private static final double Y_HAUT = 40;
     private static final double Y_BAS = 300;
@@ -60,7 +54,7 @@ public class VueAnimation extends Pane {
     private final ImageView parachutisteVue = new ImageView(parachuteFerme);
 
     // --- DICTIONNAIRE DE LIAISON MVC ---
-    // Associer un objet (modèle) à son image (View)a
+    // Associer un objet (modèle) à son image (View)
     private final Map<ObjetEnvironnant, ImageView> vuesObjets = new HashMap<>();
 
     private Avion avion;
@@ -97,6 +91,7 @@ public class VueAnimation extends Pane {
         this.getChildren().add(iv); // Ajout au Pane
     }
 
+    //Place le ciel et le sol
     private void initialiserDecors() {
         cielVue.setFitWidth(SCREEN_WIDTH);
         cielVue.setFitHeight(SCREEN_HEIGHT);
@@ -127,9 +122,7 @@ public class VueAnimation extends Pane {
         }
     }
 
-    /**
-     * Met à jour l'ensemble de l'animation à chaque frame.
-     */
+
     public void update(double vitessePara, double altitude, double hautInit, double facteur) {
         // Calcul de la progression de la chute (0.0 à 1.0)
         double progress = 1.0 - (altitude / hautInit);
@@ -171,7 +164,7 @@ public class VueAnimation extends Pane {
             // Déplacement vertical des nuages
             n.setPosition(new Point2D(n.getPosition().getX(), n.getPosition().getY() - vitesseDefilement));
 
-            // Logique de "Respawn" des nuages pour une simulation infinie
+            // Logique de Respawn des nuages pour une simulation infinie
             if (n.getPosition().getY() < LIMITE_SORTIE_NUAGE) {
                 if (altitude > SEUIL_NUAGES_DISPARAISSENT) {
                     // Réapparaissent en bas avec un X aléatoire
@@ -215,9 +208,9 @@ public class VueAnimation extends Pane {
         }
     }
 
-    /**
-     * Affiche ou masque les éléments lors du début ou de la fin de simulation.
-     */
+
+    // Affiche ou masque les éléments lors du début ou de la fin de simulation.
+
     public void setVisibleSimulation(boolean visible) {
         parachutisteVue.setVisible(visible);
 
